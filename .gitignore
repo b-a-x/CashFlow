@@ -6,3 +6,4 @@
 /src/Server/obj
 /src/WebClient/bin/Debug/netstandard2.1
 /src/WebClient/obj
+/src/WebClient/bin/Release/netstandard2.1
