@@ -1,3 +1,4 @@
+using CashFlowManagement.Server.Data;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 
@@ -7,6 +8,7 @@ namespace CashFlowManagement.Server
     {
         public static void Main(string[] args)
         {
+            //CreateHostBuilder(args).Build().MigrateDatabase().Run();
             CreateHostBuilder(args).Build().Run();
         }
 
