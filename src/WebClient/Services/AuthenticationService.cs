@@ -39,7 +39,7 @@ namespace WebClient.Services
 			var content = JsonSerializer.Serialize(userForRegistration);
 			var bodyContent = new StringContent(content, Encoding.UTF8, _applicationJson);
 
-			var registrationResult = await _client.PostAsync("https://localhost:5001/api/user/registration", bodyContent);
+			var registrationResult = await _client.PostAsync("api/user/registration", bodyContent);
 			var registrationContent = await registrationResult.Content.ReadAsStringAsync();
 
 			if (!registrationResult.IsSuccessStatusCode)
@@ -56,7 +56,7 @@ namespace WebClient.Services
 			var content = JsonSerializer.Serialize(userForAuthentication);
 			var bodyContent = new StringContent(content, Encoding.UTF8, _applicationJson);
 
-			var authResult = await _client.PostAsync("https://localhost:5001/api/user/login", bodyContent);
+			var authResult = await _client.PostAsync("api/user/login", bodyContent);
 			var authContent = await authResult.Content.ReadAsStringAsync();
 			var result = JsonSerializer.Deserialize<AuthResponseDto>(authContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
@@ -79,7 +79,7 @@ namespace WebClient.Services
 			var tokenDto = JsonSerializer.Serialize(new RefreshTokenDto { Token = token, RefreshToken = refreshToken });
 			var bodyContent = new StringContent(tokenDto, Encoding.UTF8, "application/json");
 
-			var refreshResult = await _client.PostAsync("https://localhost:5001/api/token/refresh", bodyContent);
+			var refreshResult = await _client.PostAsync("api/token/refresh", bodyContent);
 			var refreshContent = await refreshResult.Content.ReadAsStringAsync();
 			var result = JsonSerializer.Deserialize<AuthResponseDto>(refreshContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
