@@ -1,10 +1,20 @@
 ﻿<AuthorizeView>
     <Authorized>
-        Hello, @context.User.Identity.Name!
-        <a href="Logout">Log out</a>
+        <!--<text>Hello, @context.User.Identity.Name</text>-->
+        <text style="color: red">Приветствую, @context.User.Identity.Name</text>
+        <NavLink class="nav-link" href="Logout">
+            <!--<span class="oi oi-account-logout" aria-hidden="true"></span> Log out-->
+            <span class="oi oi-account-logout" aria-hidden="true"></span> Выход
+        </NavLink>
     </Authorized>
     <NotAuthorized>
-        <a href="Registration">Register</a>
-        <a href="Login">Log in</a>
+        <NavLink class="nav-link" href="Login">
+            <!--<span class="oi oi-account-login" aria-hidden="true"></span> Log in-->
+            <span class="oi oi-account-login" aria-hidden="true"></span> Вход
+        </NavLink>
+        <NavLink class="nav-link" href="Registration">
+            <!--<span class="oi oi-aperture" aria-hidden="true"></span> Register-->
+            <span class="oi oi-aperture" aria-hidden="true"></span> Регистрация
+        </NavLink>
     </NotAuthorized>
 </AuthorizeView>
