@@ -34,7 +34,7 @@ namespace CashFlowManagement.Server.Controllers
             var principal = _tokenService.GetPrincipalFromExpiredToken(tokenDto.Token);
             var username = principal.Identity.Name;
 
-            var user = await _userManager.FindByEmailAsync(username);
+            var user = await _userManager.FindByNameAsync(username);
             if (user == null || user.RefreshToken != tokenDto.RefreshToken || user.RefreshTokenExpiryTime <= DateTime.Now)
                 return BadRequest(new AuthResponseDto { IsAuthSuccessful = false, ErrorMessage = "Invalid client request" });
 
