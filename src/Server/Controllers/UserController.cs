@@ -29,16 +29,12 @@ namespace CashFlowManagement.Server.Controllers
             if (userForRegistration == null || !ModelState.IsValid)
                 return BadRequest();
 
-            var user = new User { UserName = userForRegistration.Email, Email = userForRegistration.Email };
+            var user = new User { UserName = userForRegistration.UserName, Email = userForRegistration.Email };
 
-            var result = await _userManager.CreateAsync(user, userForRegistration.Password);
+            IdentityResult result = await _userManager.CreateAsync(user, userForRegistration.Password);
             if (!result.Succeeded)
-            {
-                var errors = result.Errors.Select(e => e.Description);
+                return BadRequest(new RegistrationResponseDto { Errors = result.Errors.Select(e => e.Description) });
 
-                return BadRequest(new RegistrationResponseDto { Errors = errors });
-            }
-            
             //await _userManager.AddToRoleAsync(user, "Viewer");
 
             return StatusCode(201);
@@ -47,7 +43,7 @@ namespace CashFlowManagement.Server.Controllers
         [HttpPost("Login")]
         public async Task<IActionResult> Login([FromBody] UserForAuthenticationDto userForAuthentication)
         {
-            var user = await _userManager.FindByNameAsync(userForAuthentication.Email);
+            var user = await _userManager.FindByEmailAsync(userForAuthentication.Email);
 
             if (user == null || !await _userManager.CheckPasswordAsync(user, userForAuthentication.Password))
                 return Unauthorized(new AuthResponseDto { ErrorMessage = "Invalid Authentication" });

@@ -1,10 +1,24 @@
 ﻿<AuthorizeView>
     <Authorized>
-        Hello, @context.User.Identity.Name!
-        <a href="Logout">Log out</a>
+        <!--<text>Hello, @context.User.Identity.Name</text>-->
+        <text style=@ColorStyle>Приветствую, @context.User.Identity.Name</text>
+        <NavLink class="nav-link" href="Logout">
+            <!--<span class="oi oi-account-logout" aria-hidden="true"></span> Log out-->
+            <span style=@ColorStyle class="oi oi-account-logout" aria-hidden="true"></span><text style=@ColorStyle> Выход</text>
+        </NavLink>
     </Authorized>
     <NotAuthorized>
-        <a href="Registration">Register</a>
-        <a href="Login">Log in</a>
+        <NavLink class="nav-link" href="Login">
+            <!--<span class="oi oi-account-login" aria-hidden="true"></span> Log in-->
+            <span style=@ColorStyle class="oi oi-account-login" aria-hidden="true"></span><text style=@ColorStyle> Вход</text>
+        </NavLink>
+        <NavLink class="nav-link" href="Registration">
+            <!--<span class="oi oi-aperture" aria-hidden="true"></span> Register-->
+            <span style=@ColorStyle class="oi oi-aperture" aria-hidden="true"></span><text style=@ColorStyle> Регистрация</text>
+        </NavLink>
     </NotAuthorized>
 </AuthorizeView>
+
+@code {
+    public string ColorStyle = "color: #ffffff;";
+}

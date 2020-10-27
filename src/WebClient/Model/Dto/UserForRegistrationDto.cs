@@ -4,6 +4,9 @@ namespace WebClient.Model.Dto
 {
     public class UserForRegistrationDto
     {
+        [Required(ErrorMessage = "Name is required.")]
+        public string UserName { get; set; }
+
         [Required(ErrorMessage = "Email is required.")]
         public string Email { get; set; }
 

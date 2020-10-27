@@ -77,7 +77,7 @@ namespace WebClient.Services
 			var refreshToken = await _localStorage.GetItemAsync<string>("refreshToken");
 
 			var tokenDto = JsonSerializer.Serialize(new RefreshTokenDto { Token = token, RefreshToken = refreshToken });
-			var bodyContent = new StringContent(tokenDto, Encoding.UTF8, "application/json");
+			var bodyContent = new StringContent(tokenDto, Encoding.UTF8, _applicationJson);
 
 			var refreshResult = await _client.PostAsync("api/token/refresh", bodyContent);
 			var refreshContent = await refreshResult.Content.ReadAsStringAsync();

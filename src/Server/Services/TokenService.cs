@@ -46,7 +46,7 @@ namespace CashFlowManagement.Server.Services
 		{
 			var claims = new List<Claim>
 			{
-				new Claim(ClaimTypes.Name, user.Email)
+				new Claim(ClaimTypes.Name, user.UserName)
 			};
 
 			var roles = await _userManager.GetRolesAsync(user);

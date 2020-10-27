@@ -1,5 +1,6 @@
 ﻿@page "/registration"
-<h3>Registration</h3>
+<!--<h3>Registration</h3>-->
+<h3>Регистрация</h3>
 
 @if (ShowRegistrationErros)
 {
@@ -13,6 +14,15 @@
 
 <EditForm Model="_userForRegistration" OnValidSubmit="Register" class="card card-body bg-light mt-5">
     <DataAnnotationsValidator />
+
+    <div class="form-group row">
+        <label for="name" class="col-md-2 col-form-label">Имя:</label>
+        <div class="col-md-10">
+            <InputText id="name" class="form-control" @bind-Value="_userForRegistration.UserName" />
+            <ValidationMessage For="@(() => _userForRegistration.UserName)" />
+        </div>
+    </div>
+
     <div class="form-group row">
         <label for="email" class="col-md-2 col-form-label">Email:</label>
         <div class="col-md-10">
@@ -22,7 +32,8 @@
     </div>
 
     <div class="form-group row">
-        <label for="password" class="col-md-2 col-form-label">Password:</label>
+        <!--<label for="password" class="col-md-2 col-form-label">Password:</label>-->
+        <label for="password" class="col-md-2 col-form-label">Пароль:</label>
         <div class="col-md-10">
             <InputText type="password" id="password" class="form-control" @bind-Value="_userForRegistration.Password" />
             <ValidationMessage For="@(() => _userForRegistration.Password)" />
@@ -30,7 +41,8 @@
     </div>
 
     <div class="form-group row">
-        <label for="confirm" class="col-md-2 col-form-label">Confirm Password:</label>
+        <!--<label for="confirm" class="col-md-2 col-form-label">Confirm Password:</label>-->
+        <label for="confirm" class="col-md-2 col-form-label">Подтвердите пароль:</label>
         <div class="col-md-10">
             <InputText type="password" id="confirm" class="form-control" @bind-Value="_userForRegistration.ConfirmPassword" />
             <ValidationMessage For="@(() => _userForRegistration.ConfirmPassword)" />
