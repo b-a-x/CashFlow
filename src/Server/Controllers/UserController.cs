@@ -37,7 +37,17 @@ namespace CashFlowManagement.Server.Controllers
 
             //await _userManager.AddToRoleAsync(user, "Viewer");
 
-            return StatusCode(201);
+            var signingCredentials = _tokenService.GetSigningCredentials();
+            var claims = await _tokenService.GetClaims(user);
+            var tokenOptions = _tokenService.GenerateTokenOptions(signingCredentials, claims);
+            var token = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
+
+            user.RefreshToken = _tokenService.GenerateRefreshToken();
+            user.RefreshTokenExpiryTime = DateTime.Now.AddDays(7);
+
+            await _userManager.UpdateAsync(user);
+
+            return Ok(new RegistrationResponseDto { IsSuccessfulRegistration = true, Token = token, RefreshToken = user.RefreshToken });
         }
 
         [HttpPost("Login")]

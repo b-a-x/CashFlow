@@ -39,14 +39,17 @@ namespace WebClient.Services
 			var content = JsonSerializer.Serialize(userForRegistration);
 			var bodyContent = new StringContent(content, Encoding.UTF8, _applicationJson);
 
-			var registrationResult = await _client.PostAsync("api/user/registration", bodyContent);
-			var registrationContent = await registrationResult.Content.ReadAsStringAsync();
+			HttpResponseMessage registrationResult = await _client.PostAsync("api/user/registration", bodyContent);
+			string registrationContent = await registrationResult.Content.ReadAsStringAsync();
+            var result = JsonSerializer.Deserialize<RegistrationResponseDto>(registrationContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+			
+            if (!registrationResult.IsSuccessStatusCode)
+                return result;
 
-			if (!registrationResult.IsSuccessStatusCode)
-			{
-				var result = JsonSerializer.Deserialize<RegistrationResponseDto>(registrationContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-				return result;
-			}
+            await _localStorage.SetItemAsync("authToken", result.Token);
+            await _localStorage.SetItemAsync("refreshToken", result.RefreshToken);
+            ((AuthStateProvider)_authStateProvider).NotifyUserAuthentication(result.Token);
+            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", result.Token);
 
 			return new RegistrationResponseDto { IsSuccessfulRegistration = true };
 		}
@@ -56,8 +59,8 @@ namespace WebClient.Services
 			var content = JsonSerializer.Serialize(userForAuthentication);
 			var bodyContent = new StringContent(content, Encoding.UTF8, _applicationJson);
 
-			var authResult = await _client.PostAsync("api/user/login", bodyContent);
-			var authContent = await authResult.Content.ReadAsStringAsync();
+			HttpResponseMessage authResult = await _client.PostAsync("api/user/login", bodyContent);
+			string authContent = await authResult.Content.ReadAsStringAsync();
 			var result = JsonSerializer.Deserialize<AuthResponseDto>(authContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
 			if (!authResult.IsSuccessStatusCode)
