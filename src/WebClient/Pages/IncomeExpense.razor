@@ -2,7 +2,109 @@
 @attribute [Authorize]
 
 <h3>Доходы/Расходы</h3>
+<p>Ваш денежный поток: @totalCahsFlow рублей</p>
+
+<RadzenButton Icon="add_circle_outline" style="margin-bottom: 10px" Text="Add" Click="@InsertRow" />
+<RadzenGrid @ref="incomesGrid" AllowFiltering="true" AllowPaging="true" PageSize="3" AllowSorting="true" EditMode="DataGridEditMode.Single"
+            Data="@incomes" TItem="Income" RowUpdate="@OnUpdateRow" RowCreate="@OnCreateRow">
+    <Columns>
+        <RadzenGridColumn Width="100px" TItem="Income" Property="Id" Title="Id"/>
+        <RadzenGridColumn Width="200px" TItem="Income" Property="Name" Title="Название"/>
+        <RadzenGridColumn Width="100px" TItem="Income" Property="Price" Title="Цена"/>
+        <RadzenGridColumn Width="100px" TItem="Income" Context="sampleBlazorModelsSampleOrder" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center">
+            <Template Context="income">
+                <RadzenButton Icon="edit" Size="ButtonSize.Small" Click="@(args => EditRow(income))">
+                </RadzenButton>
+            </Template>
+            <EditTemplate Context="income">
+                <RadzenButton Icon="save" Size="ButtonSize.Small" Click="@((args) => SaveRow(income))">
+                </RadzenButton>
+                <RadzenButton Icon="cancel" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Secondary" Click="@((args) => CancelEdit(income))">
+                </RadzenButton>
+            </EditTemplate>
+        </RadzenGridColumn>
+        <RadzenGridColumn TItem="Income" Context="order" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="70px">
+            <Template Context="income">
+                <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Small" Click="@(args => DeleteRow(income))">
+                </RadzenButton>
+            </Template>
+            <EditTemplate Context="income">
+                <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Small" Click="@(args => DeleteRow(income))">
+                </RadzenButton>
+            </EditTemplate>
+        </RadzenGridColumn>
+    </Columns>
+
+</RadzenGrid>
 
 @code {
+    RadzenGrid<Income> incomesGrid;
+    private float totalCahsFlow = 1000;
+    private List<Income> incomes = new List<Income>()
+    {
+        new Income{Id = 1, Name = "Test1", Price = 5421},
+        new Income{Id = 2, Name = "Test2", Price = 13465},
+        new Income{Id = 3, Name = "Test3", Price = 12545},
+        new Income{Id = 4, Name = "Test4", Price = 135465},
+        new Income{Id = 5, Name = "Test5", Price = 135457},
+        new Income{Id = 6, Name = "Test6", Price = 1354687},
+    };
 
+    private void InsertRow()
+    {
+        incomesGrid.InsertRow(new Income());
+    }
+
+    private void OnUpdateRow(Income income)
+    {
+        foreach (Income item in incomes)
+        {
+            if (item.Id == income.Id)
+            {
+                item.Name = income.Name;
+                item.Price = income.Price;
+            }
+        }
+    }
+
+    private void OnCreateRow(Income income)
+    {
+        incomes.Add(income);
+    }
+
+    private void EditRow(Income income)
+    {
+        incomesGrid.EditRow(income);
+    }
+
+    private void SaveRow(Income income)
+    {
+        incomesGrid.UpdateRow(income);
+    }
+
+    private void CancelEdit(Income income)
+    {
+        incomesGrid.CancelEditRow(income);
+    }
+
+    private void DeleteRow(Income income)
+    {
+        if (incomes.Contains(income))
+        {
+            incomes.Remove(income);
+            incomesGrid.Reload();
+        }
+        else
+        {
+            incomesGrid.CancelEditRow(income);
+        }
+    }
+
+
+    public class Income
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public float Price { get; set; }
+    }
 }
