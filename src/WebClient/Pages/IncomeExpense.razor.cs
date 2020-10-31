@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using Radzen.Blazor;
 
@@ -6,34 +8,61 @@ namespace WebClient.Pages
 {
     public partial class IncomeExpense
     {
-        private float totalCahsFlow => totalIncome - totalExpense;
+        private readonly CultureInfo culture = new CultureInfo("ru-RU");
+
+        private string titleTotalCashFlow;
         private float totalIncome;
         private float totalExpense;
+        public float TotalIncome
+        {
+            get => totalIncome;
+            set
+            {
+                totalIncome = value;
+                CalculateTotalCashFlow();
+            }
+        }
+        public float TotalExpense
+        {
+            get => totalExpense;
+            set
+            {
+                totalExpense = value;
+                CalculateTotalCashFlow();
+            }
+        }
+
 
         protected override void OnInitialized()
         {
-            totalIncome = incomes.Sum(x => x.Price);
-            totalExpense = expenses.Sum(x => x.Price);
+            TotalIncome = incomes.Sum(x => x.Price);
+            TotalExpense = expenses.Sum(x => x.Price);
             base.OnInitialized();
+        }
+
+        private void CalculateTotalCashFlow()
+        {
+            titleTotalCashFlow = $"{string.Format(culture, "{0:C} ", totalIncome - totalExpense)}";
         }
 
         public class Income
         {
-            public int Id { get; set; }
+            public string Id { get; set; }
             public string Name { get; set; }
             public float Price { get; set; }
+            public int OrderNumber { get; set; }
         }
         private RadzenGrid<Income> incomesGrid;
         private List<Income> incomes = new List<Income>
         {
-        new Income{Id = 1, Name = "Зарплата", Price = 100000}
+            new Income{Id = Guid.NewGuid().ToString(), Name = "Зарплата", Price = 100000, OrderNumber = 1}
         };
 
         private void InsertRowIncome()
         {
             var income = new Income();
-            var id = (incomes.OrderByDescending(x => x.Id).First()?.Id ?? 0) + 1;
-            income.Id = id;
+            var id = (incomes.OrderByDescending(x => x.OrderNumber).First()?.OrderNumber ?? 0) + 1;
+            income.OrderNumber = id;
             incomesGrid.InsertRow(income);
         }
 
@@ -48,13 +77,13 @@ namespace WebClient.Pages
                     item.Price = income.Price;
                 }
             }
-            totalIncome = incomes.Sum(x => x.Price);
+            TotalIncome = incomes.Sum(x => x.Price);
         }
 
         private void OnCreateRowIncome(Income income)
         {
             incomes.Add(income);
-            totalIncome = incomes.Sum(x => x.Price);
+            TotalIncome = incomes.Sum(x => x.Price);
         }
 
         private void EditRowIncome(Income income)
@@ -79,7 +108,7 @@ namespace WebClient.Pages
             {
                 incomes.Remove(income);
                 incomesGrid.Reload();
-                totalIncome = incomes.Sum(x => x.Price);
+                TotalIncome = incomes.Sum(x => x.Price);
             }
             else
             {
@@ -89,23 +118,24 @@ namespace WebClient.Pages
 
         public class Expense
         {
-            public int Id { get; set; }
+            public string Id { get; set; }
             public string Name { get; set; }
             public float Price { get; set; }
+            public int OrderNumber { get; set; }
         }
         private RadzenGrid<Expense> expensesGrid;
         private List<Expense> expenses = new List<Expense>
-    {
-        new Expense{Id = 1, Name = "Квартира", Price = 15000},
-        new Expense{Id = 2, Name = "Продукты", Price = 15000},
-        new Expense{Id = 3, Name = "Прочие расходы", Price = 10000}
-    };
+        {
+            new Expense{Id = Guid.NewGuid().ToString(), Name = "Квартира", Price = 15000, OrderNumber = 1},
+            new Expense{Id = Guid.NewGuid().ToString(), Name = "Продукты", Price = 15000, OrderNumber = 2},
+            new Expense{Id = Guid.NewGuid().ToString(), Name = "Прочие расходы", Price = 10000, OrderNumber = 3}
+        };
 
         private void InsertRowExpense()
         {
             var expense = new Expense();
-            var id = (expenses.OrderByDescending(x => x.Id).First()?.Id ?? 0) + 1;
-            expense.Id = id;
+            var id = (expenses.OrderByDescending(x => x.OrderNumber).First()?.OrderNumber ?? 0) + 1;
+            expense.OrderNumber = id;
             expensesGrid.InsertRow(expense);
         }
 
@@ -120,13 +150,13 @@ namespace WebClient.Pages
                     item.Price = expense.Price;
                 }
             }
-            totalExpense = expenses.Sum(x => x.Price);
+            TotalExpense = expenses.Sum(x => x.Price);
         }
 
         private void OnCreateRowExpense(Expense expense)
         {
             expenses.Add(expense);
-            totalExpense = expenses.Sum(x => x.Price);
+            TotalExpense = expenses.Sum(x => x.Price);
         }
 
         private void EditRowExpense(Expense expense)
@@ -151,7 +181,7 @@ namespace WebClient.Pages
             {
                 expenses.Remove(expense);
                 expensesGrid.Reload();
-                totalExpense = expenses.Sum(x => x.Price);
+                TotalExpense = expenses.Sum(x => x.Price);
             }
             else
             {
