@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using Radzen.Blazor;
+using WebClient.Services;
 
 namespace WebClient.Pages
 {
@@ -10,6 +12,17 @@ namespace WebClient.Pages
     {
         [Inject]
         private IFormatProvider provider { get; set; }
+
+        [Inject]
+        public HttpInterceptorService interceptor { get; set; }
+
+        protected override Task OnInitializedAsync()
+        {
+            interceptor.RegisterEvent();
+            return base.OnInitializedAsync();
+        }
+        
+        public void Dispose() => interceptor.DisposeEvent();
 
         public class Asset
         {

@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components.Authorization;
+using Toolbelt.Blazor.Extensions.DependencyInjection;
 using WebClient.Providers;
 using WebClient.Services;
 
@@ -18,7 +19,7 @@ namespace WebClient
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             builder.RootComponents.Add<App>("app");
 
-            builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+            builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) }.EnableIntercept(sp));
             builder.Services.AddScoped<AuthenticationStateProvider, AuthStateProvider>();
             builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
             builder.Services.AddScoped<RefreshTokenService>();
@@ -26,6 +27,7 @@ namespace WebClient
             
             builder.Services.AddSingleton<IFormatProvider>(new CultureInfo("ru-RU"));
 
+            builder.Services.AddHttpClientInterceptor();
             builder.Services.AddBlazoredLocalStorage();
             builder.Services.AddAuthorizationCore();
 

@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using Radzen.Blazor;
+using WebClient.Services;
 
 namespace WebClient.Pages
 {
@@ -10,6 +12,9 @@ namespace WebClient.Pages
     {
         [Inject]
         private IFormatProvider provider { get; set; }
+
+        [Inject]
+        public HttpInterceptorService interceptor { get; set; }
 
         private string titleTotalCashFlow;
         private float totalIncome;
@@ -33,13 +38,15 @@ namespace WebClient.Pages
             }
         }
 
-
-        protected override void OnInitialized()
+        protected override Task OnInitializedAsync()
         {
+            interceptor.RegisterEvent();
             TotalIncome = incomes.Sum(x => x.Price);
             TotalExpense = expenses.Sum(x => x.Price);
-            base.OnInitialized();
+            return base.OnInitializedAsync();
         }
+
+        public void Dispose() => interceptor.DisposeEvent();
 
         private void CalculateTotalCashFlow()
         {
