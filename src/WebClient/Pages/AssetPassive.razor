@@ -1,8 +1,105 @@
 ﻿@page "/assetpassive"
 @attribute [Authorize]
 
-<h3>Активы/Пассивы</h3>
+<h4>Активы</h4>
+<RadzenButton Icon="add_circle_outline" style="margin-bottom: 10px" Text="Добавить" Click="@InsertRowAsset" />
+<RadzenGrid @ref="assetGrid" AllowFiltering="false" AllowPaging="true" PageSize="4" AllowSorting="true" EditMode="DataGridEditMode.Single"
+            Data="@assets" TItem="Asset" RowUpdate="@OnUpdateRowAsset" RowCreate="@OnCreateRowAsset">
+    <Columns>
+        <RadzenGridColumn Visible="false" Width="100px" TItem="Asset" Property="Id" Title="Id" />
+        <RadzenGridColumn Width="15px" TItem="Asset" Property="OrderNumber" Title="№" />
+        <RadzenGridColumn Width="200px" TItem="Asset" Property="Name" Title="Название">
+            <EditTemplate Context="asset">
+                <RadzenTextBox @bind-Value="asset.Name" Style="width:100%; display: block" Name="Название" />
+                <RadzenRequiredValidator Text="Обязательно к заполнению" Component="Название" Popup="true" />
+            </EditTemplate>
+        </RadzenGridColumn>
+        <RadzenGridColumn Width="30px" TItem="Asset" Property="Quantity" Title="Кол-во">
+            <EditTemplate Context="asset">
+                <RadzenNumeric @bind-Value="asset.Quantity" Style="width:100%" />
+            </EditTemplate>
+        </RadzenGridColumn>
+        <RadzenGridColumn Width="50px" TItem="Asset" Property="Price" Title="Цена">
+            <Template Context="asset">
+                @string.Format(culture, "{0:C}", asset.Price)
+            </Template>
+            <FooterTemplate>
+                <b>@string.Format(culture, "{0:C}", assets.Sum(o => o.Price))</b>
+            </FooterTemplate>
+            <EditTemplate Context="asset">
+                <RadzenNumeric @bind-Value="asset.Price" Style="width:100%" />
+            </EditTemplate>
+        </RadzenGridColumn>
+        <RadzenGridColumn TItem="Asset" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="20px">
+            <Template Context="asset">
+                <RadzenButton Icon="edit" Size="ButtonSize.Small" Click="@(args => EditRowAsset(asset))">
+                </RadzenButton>
+            </Template>
+            <EditTemplate Context="asset">
+                <RadzenButton Icon="save" Size="ButtonSize.Small" Click="@((args) => SaveRowAsset(asset))">
+                </RadzenButton>
+                <RadzenButton Icon="cancel" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Secondary" Click="@((args) => CancelEditAsset(asset))">
+                </RadzenButton>
+            </EditTemplate>
+        </RadzenGridColumn>
+        <RadzenGridColumn TItem="Asset" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="20px">
+            <Template Context="asset">
+                <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Small" Click="@(args => DeleteRowAsset(asset))">
+                </RadzenButton>
+            </Template>
+            <EditTemplate Context="asset">
+                <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Small" Click="@(args => DeleteRowAsset(asset))">
+                </RadzenButton>
+            </EditTemplate>
+        </RadzenGridColumn>
+    </Columns>
+</RadzenGrid>
 
-@code {
-
-}
+<h4>Пассивы</h4>
+<RadzenButton Icon="add_circle_outline" style="margin-bottom: 10px" Text="Добавить" Click="@InsertRowPassive" />
+<RadzenGrid @ref="passiveGrid" AllowFiltering="false" AllowPaging="true" PageSize="4" AllowSorting="true" EditMode="DataGridEditMode.Single"
+            Data="@passives" TItem="Passive" RowUpdate="@OnUpdateRowPassive" RowCreate="@OnCreateRowPassive">
+    <Columns>
+        <RadzenGridColumn Visible="false" Width="100px" TItem="Passive" Property="Id" Title="Id" />
+        <RadzenGridColumn Width="15px" TItem="Passive" Property="OrderNumber" Title="№" />
+        <RadzenGridColumn Width="200px" TItem="Passive" Property="Name" Title="Название">
+            <EditTemplate Context="passive">
+                <RadzenTextBox @bind-Value="passive.Name" Style="width:100%; display: block" Name="Название" />
+                <RadzenRequiredValidator Text="Обязательно к заполнению" Component="Название" Popup="true" />
+            </EditTemplate>
+        </RadzenGridColumn>
+        <RadzenGridColumn Width="50px" TItem="Passive" Property="Price" Title="Цена">
+            <Template Context="passive">
+                @string.Format(culture, "{0:C}", passive.Price)
+            </Template>
+            <FooterTemplate>
+                <b>@string.Format(culture, "{0:C}", passives.Sum(o => o.Price))</b>
+            </FooterTemplate>
+            <EditTemplate Context="passive">
+                <RadzenNumeric @bind-Value="passive.Price" Style="width:100%" />
+            </EditTemplate>
+        </RadzenGridColumn>
+        <RadzenGridColumn TItem="Passive" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="20px">
+            <Template Context="passive">
+                <RadzenButton Icon="edit" Size="ButtonSize.Small" Click="@(args => EditRowPassive(passive))">
+                </RadzenButton>
+            </Template>
+            <EditTemplate Context="passive">
+                <RadzenButton Icon="save" Size="ButtonSize.Small" Click="@((args) => SaveRowPassive(passive))">
+                </RadzenButton>
+                <RadzenButton Icon="cancel" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Secondary" Click="@((args) => CancelEditPassive(passive))">
+                </RadzenButton>
+            </EditTemplate>
+        </RadzenGridColumn>
+        <RadzenGridColumn TItem="Passive" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="20px">
+            <Template Context="passive">
+                <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Small" Click="@(args => DeleteRowPassive(passive))">
+                </RadzenButton>
+            </Template>
+            <EditTemplate Context="passive">
+                <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Small" Click="@(args => DeleteRowPassive(passive))">
+                </RadzenButton>
+            </EditTemplate>
+        </RadzenGridColumn>
+    </Columns>
+</RadzenGrid>

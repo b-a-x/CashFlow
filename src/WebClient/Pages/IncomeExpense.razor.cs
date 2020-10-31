@@ -52,10 +52,12 @@ namespace WebClient.Pages
             public float Price { get; set; }
             public int OrderNumber { get; set; }
         }
+        
         private RadzenGrid<Income> incomesGrid;
         private List<Income> incomes = new List<Income>
         {
-            new Income{Id = Guid.NewGuid().ToString(), Name = "Зарплата", Price = 100000, OrderNumber = 1}
+            new Income{Id = Guid.NewGuid().ToString(), Name = "Зарплата", Price = 100000, OrderNumber = 1},
+            new Income{Id = Guid.NewGuid().ToString(), Name = "Дивиденты по акциям компании Apple", Price = 250, OrderNumber = 2}
         };
 
         private void InsertRowIncome()
@@ -128,7 +130,8 @@ namespace WebClient.Pages
         {
             new Expense{Id = Guid.NewGuid().ToString(), Name = "Квартира", Price = 15000, OrderNumber = 1},
             new Expense{Id = Guid.NewGuid().ToString(), Name = "Продукты", Price = 15000, OrderNumber = 2},
-            new Expense{Id = Guid.NewGuid().ToString(), Name = "Прочие расходы", Price = 10000, OrderNumber = 3}
+            new Expense{Id = Guid.NewGuid().ToString(), Name = "Прочие расходы", Price = 10000, OrderNumber = 3},
+            new Expense{Id = Guid.NewGuid().ToString(), Name = "Платеж по ипотеке", Price = 30000, OrderNumber = 4}
         };
 
         private void InsertRowExpense()

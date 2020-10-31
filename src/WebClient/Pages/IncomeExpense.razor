@@ -39,7 +39,7 @@
                 </RadzenButton>
             </EditTemplate>
         </RadzenGridColumn>
-        <RadzenGridColumn TItem="Income" Context="order" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="20px">
+        <RadzenGridColumn TItem="Income" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="20px">
             <Template Context="income">
                 <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Small" Click="@(args => DeleteRowIncome(income))">
                 </RadzenButton>
