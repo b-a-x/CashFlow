@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
+using Microsoft.AspNetCore.Components;
 using Radzen.Blazor;
 
 namespace WebClient.Pages
 {
     public partial class IncomeExpense
     {
-        private readonly CultureInfo culture = new CultureInfo("ru-RU");
+        [Inject]
+        private IFormatProvider provider { get; set; }
 
         private string titleTotalCashFlow;
         private float totalIncome;
@@ -42,7 +43,7 @@ namespace WebClient.Pages
 
         private void CalculateTotalCashFlow()
         {
-            titleTotalCashFlow = $"{string.Format(culture, "{0:C} ", totalIncome - totalExpense)}";
+            titleTotalCashFlow = $"{string.Format(provider, "{0:C} ", totalIncome - totalExpense)}";
         }
 
         public class Income

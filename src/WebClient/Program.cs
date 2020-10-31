@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Globalization;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Blazored.LocalStorage;
@@ -22,6 +23,8 @@ namespace WebClient
             builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
             builder.Services.AddScoped<RefreshTokenService>();
             builder.Services.AddScoped<HttpInterceptorService>();
+            
+            builder.Services.AddSingleton<IFormatProvider>(new CultureInfo("ru-RU"));
 
             builder.Services.AddBlazoredLocalStorage();
             builder.Services.AddAuthorizationCore();

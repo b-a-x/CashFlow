@@ -21,10 +21,10 @@
         </RadzenGridColumn>
         <RadzenGridColumn Width="50px" TItem="Asset" Property="Price" Title="Цена">
             <Template Context="asset">
-                @string.Format(culture, "{0:C}", asset.Price)
+                @string.Format(provider, "{0:C}", asset.Price)
             </Template>
             <FooterTemplate>
-                <b>@string.Format(culture, "{0:C}", assets.Sum(o => o.Price))</b>
+                <b>@string.Format(provider, "{0:C}", assets.Sum(o => o.Price))</b>
             </FooterTemplate>
             <EditTemplate Context="asset">
                 <RadzenNumeric @bind-Value="asset.Price" Style="width:100%" />
@@ -70,10 +70,10 @@
         </RadzenGridColumn>
         <RadzenGridColumn Width="50px" TItem="Passive" Property="Price" Title="Цена">
             <Template Context="passive">
-                @string.Format(culture, "{0:C}", passive.Price)
+                @string.Format(provider, "{0:C}", passive.Price)
             </Template>
             <FooterTemplate>
-                <b>@string.Format(culture, "{0:C}", passives.Sum(o => o.Price))</b>
+                <b>@string.Format(provider, "{0:C}", passives.Sum(o => o.Price))</b>
             </FooterTemplate>
             <EditTemplate Context="passive">
                 <RadzenNumeric @bind-Value="passive.Price" Style="width:100%" />

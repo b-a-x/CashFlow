@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
+using Microsoft.AspNetCore.Components;
 using Radzen.Blazor;
 
 namespace WebClient.Pages
 {
     public partial class AssetPassive
     {
-        private readonly CultureInfo culture = new CultureInfo("ru-RU");
+        [Inject]
+        private IFormatProvider provider { get; set; }
 
         public class Asset
         {
