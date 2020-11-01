@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using Radzen.Blazor;
+using WebClient.Model.Entities;
 using WebClient.Services;
 
 namespace WebClient.Pages
@@ -11,118 +12,114 @@ namespace WebClient.Pages
     public partial class IncomeExpense
     {
         [Inject]
-        private IFormatProvider provider { get; set; }
+        private IFormatProvider _provider { get; set; }
 
         [Inject]
-        public HttpInterceptorService interceptor { get; set; }
+        private HttpInterceptorService _interceptor { get; set; }
 
-        private string titleTotalCashFlow;
-        private float totalIncome;
-        private float totalExpense;
+        [Inject]
+        private IIncomeService _incomeService { get; set; }
+
+        private string _titleTotalCashFlow;
+        private float _totalIncome;
+        private float _totalExpense;
+
+        private List<Income> _incomes = new List<Income>();
+        private RadzenGrid<Income> _incomesGrid;
+
         public float TotalIncome
         {
-            get => totalIncome;
+            get => _totalIncome;
             set
             {
-                totalIncome = value;
+                _totalIncome = value;
                 CalculateTotalCashFlow();
             }
         }
         public float TotalExpense
         {
-            get => totalExpense;
+            get => _totalExpense;
             set
             {
-                totalExpense = value;
+                _totalExpense = value;
                 CalculateTotalCashFlow();
             }
         }
 
-        protected override Task OnInitializedAsync()
+        protected override async Task OnInitializedAsync()
         {
-            interceptor.RegisterEvent();
-            TotalIncome = incomes.Sum(x => x.Price);
+            _interceptor.RegisterEvent();
+            _incomes = (List<Income>)await _incomeService.GetAllIncomeForUserAsync(string.Empty);
+            TotalIncome = _incomes.Sum(x => x.Price);
             TotalExpense = expenses.Sum(x => x.Price);
-            return base.OnInitializedAsync();
+            await base.OnInitializedAsync();
         }
 
-        public void Dispose() => interceptor.DisposeEvent();
+        public void Dispose() => _interceptor.DisposeEvent();
 
         private void CalculateTotalCashFlow()
         {
-            titleTotalCashFlow = $"{string.Format(provider, "{0:C} ", totalIncome - totalExpense)}";
-        }
-
-        public class Income
-        {
-            public string Id { get; set; }
-            public string Name { get; set; }
-            public float Price { get; set; }
-            public int OrderNumber { get; set; }
+            _titleTotalCashFlow = $"{string.Format(_provider, "{0:C} ", _totalIncome - _totalExpense)}";
         }
         
-        private RadzenGrid<Income> incomesGrid;
-        private List<Income> incomes = new List<Income>
-        {
-            new Income{Id = Guid.NewGuid().ToString(), Name = "Зарплата", Price = 100000, OrderNumber = 1},
-            new Income{Id = Guid.NewGuid().ToString(), Name = "Дивиденты по акциям компании Apple", Price = 250, OrderNumber = 2}
-        };
-
         private void InsertRowIncome()
         {
-            var income = new Income();
-            var id = (incomes.OrderByDescending(x => x.OrderNumber).First()?.OrderNumber ?? 0) + 1;
-            income.OrderNumber = id;
-            incomesGrid.InsertRow(income);
-        }
-
-        private void OnUpdateRowIncome(Income income)
-        {
-            //TODO Научиться правильно пределять объект
-            foreach (Income item in incomes)
+            var income = new Income
             {
-                if (item.Id == income.Id)
-                {
-                    item.Name = income.Name;
-                    item.Price = income.Price;
-                }
-            }
-            TotalIncome = incomes.Sum(x => x.Price);
+                OrderNumber = (_incomes.OrderByDescending(x => x.OrderNumber).FirstOrDefault()?.OrderNumber ?? 0) + 1
+            };
+            
+            _incomesGrid.InsertRow(income);
         }
 
-        private void OnCreateRowIncome(Income income)
+        private async Task OnUpdateRowIncome(Income income)
         {
-            incomes.Add(income);
-            TotalIncome = incomes.Sum(x => x.Price);
+            Income edit = _incomes.FirstOrDefault(x => x.Id == income.Id);
+            if (edit != null)
+            {
+                edit.Name = income.Name;
+                edit.Price = income.Price;
+                await _incomeService.UpdateIncomeAsync(edit);
+            }
+
+            TotalIncome = _incomes.Sum(x => x.Price);
+        }
+
+        private async Task OnCreateRowIncome(Income income)
+        {
+            income = await _incomeService.CreateIncomeAsync(income);
+            _incomes.Add(income);
+            TotalIncome = _incomes.Sum(x => x.Price);
+            await _incomesGrid.Reload();
         }
 
         private void EditRowIncome(Income income)
         {
-            incomesGrid.EditRow(income);
+            _incomesGrid.EditRow(income);
         }
 
         private void SaveRowIncome(Income income)
         {
-            incomesGrid.UpdateRow(income);
+            _incomesGrid.UpdateRow(income);
         }
 
         private void CancelEditIncome(Income income)
         {
-            incomesGrid.CancelEditRow(income);
+            _incomesGrid.CancelEditRow(income);
         }
 
-        private void DeleteRowIncome(Income income)
+        private async Task DeleteRowIncome(Income income)
         {
-            //TODO Научиться правильно пределять объект
-            if (incomes.Contains(income))
+            if (_incomes.Contains(income))
             {
-                incomes.Remove(income);
-                incomesGrid.Reload();
-                TotalIncome = incomes.Sum(x => x.Price);
+                _incomes.Remove(income);
+                TotalIncome = _incomes.Sum(x => x.Price);
+                await _incomesGrid.Reload();
+                await _incomeService.RemoveIncomeAsync(income.Id);
             }
             else
             {
-                incomesGrid.CancelEditRow(income);
+                _incomesGrid.CancelEditRow(income);
             }
         }
 
@@ -145,7 +142,7 @@ namespace WebClient.Pages
         private void InsertRowExpense()
         {
             var expense = new Expense();
-            var id = (expenses.OrderByDescending(x => x.OrderNumber).First()?.OrderNumber ?? 0) + 1;
+            var id = (expenses.OrderByDescending(x => x.OrderNumber).FirstOrDefault()?.OrderNumber ?? 0) + 1;
             expense.OrderNumber = id;
             expensesGrid.InsertRow(expense);
         }

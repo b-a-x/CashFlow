@@ -24,6 +24,7 @@ namespace WebClient
             builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
             builder.Services.AddScoped<RefreshTokenService>();
             builder.Services.AddScoped<HttpInterceptorService>();
+            builder.Services.AddScoped<IIncomeService, IncomeService>();
             
             builder.Services.AddSingleton<IFormatProvider>(new CultureInfo("ru-RU"));
 

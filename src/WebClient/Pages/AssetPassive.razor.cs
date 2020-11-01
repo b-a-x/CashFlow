@@ -42,7 +42,7 @@ namespace WebClient.Pages
         private void InsertRowAsset()
         {
             var asset = new Asset();
-            var id = (assets.OrderByDescending(x => x.OrderNumber).First()?.OrderNumber ?? 0) + 1;
+            var id = (assets.OrderByDescending(x => x.OrderNumber).FirstOrDefault()?.OrderNumber ?? 0) + 1;
             asset.OrderNumber = id;
             assetGrid.InsertRow(asset);
         }
@@ -113,7 +113,7 @@ namespace WebClient.Pages
         private void InsertRowPassive()
         {
             var passive = new Passive();
-            var id = (passives.OrderByDescending(x => x.OrderNumber).First()?.OrderNumber ?? 0) + 1;
+            var id = (passives.OrderByDescending(x => x.OrderNumber).FirstOrDefault()?.OrderNumber ?? 0) + 1;
             passive.OrderNumber = id;
             passiveGrid.InsertRow(passive);
         }

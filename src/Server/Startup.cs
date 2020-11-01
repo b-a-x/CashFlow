@@ -11,6 +11,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using WebClient.Services;
+using IncomeService = CashFlowManagement.Server.Services.IncomeService;
 
 namespace CashFlowManagement.Server
 {
@@ -36,10 +38,9 @@ namespace CashFlowManagement.Server
                     .WithExposedHeaders("X-Pagination"));
             });
 
-            services.AddControllersWithViews();
-            services.AddRazorPages();
+            services.AddControllers();
 
-            services.AddDbContext<DataContext>(x => x.UseInMemoryDatabase("TestDb"));
+            services.AddDbContextPool<DataContext>(x => x.UseInMemoryDatabase("TestDb"));
             services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<DataContext>();
 
             var jwtSettings = Configuration.GetSection("JwtSettings");
@@ -63,6 +64,7 @@ namespace CashFlowManagement.Server
             });
             
             services.AddScoped<ITokenService, TokenService>();
+            services.AddScoped<IIncomeService, IncomeService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -75,7 +77,6 @@ namespace CashFlowManagement.Server
             }
             else
             {
-                app.UseExceptionHandler("/Error");
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
@@ -92,7 +93,6 @@ namespace CashFlowManagement.Server
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapRazorPages();
                 endpoints.MapControllers();
                 endpoints.MapFallbackToFile("index.html");
             });

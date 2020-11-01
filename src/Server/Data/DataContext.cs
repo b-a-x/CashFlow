@@ -2,6 +2,7 @@
 using CashFlowManagement.Server.Model;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using WebClient.Model.Entities;
 
 namespace CashFlowManagement.Server.Data
 {
@@ -12,11 +13,14 @@ namespace CashFlowManagement.Server.Data
         {
         }
 
+        public DbSet<Income> Incomes { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.ApplyConfiguration(new RoleConfiguration());
+            modelBuilder.ApplyConfiguration(new IncomeConfiguration());
         }
     }
 }

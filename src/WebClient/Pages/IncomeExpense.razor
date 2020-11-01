@@ -1,14 +1,15 @@
-﻿@page "/incomeexpense"
+﻿@using WebClient.Model.Entities;
+@page "/incomeexpense"
 @attribute [Authorize]
 
-<h2>Ежемесячный денежный поток: @titleTotalCashFlow</h2>
+<h2>Ежемесячный денежный поток: @_titleTotalCashFlow</h2>
 
 <h4>Доходы</h4>
 <RadzenButton Icon="add_circle_outline" style="margin-bottom: 10px" Text="Добавить" Click="@InsertRowIncome" />
-<RadzenGrid @ref="incomesGrid" AllowFiltering="false" AllowPaging="true" PageSize="4" AllowSorting="true" EditMode="DataGridEditMode.Single"
-            Data="@incomes" TItem="Income" RowUpdate="@OnUpdateRowIncome" RowCreate="@OnCreateRowIncome">
+<RadzenGrid @ref="_incomesGrid" AllowFiltering="false" AllowPaging="true" PageSize="4" AllowSorting="true" EditMode="DataGridEditMode.Single"
+             Data="@_incomes" TItem="Income" RowUpdate="@OnUpdateRowIncome" RowCreate="@OnCreateRowIncome">
     <Columns>
-        <RadzenGridColumn Visible = "false" Width="100px" TItem="Income" Property="Id" Title="Id" />
+        <RadzenGridColumn Visible="false" Width="100px" TItem="Income" Property="Id" Title="Id" />
         <RadzenGridColumn Width="15px" TItem="Income" Property="OrderNumber" Title="№" />
         <RadzenGridColumn Width="200px" TItem="Income" Property="Name" Title="Название">
             <EditTemplate Context="income">
@@ -18,10 +19,10 @@
         </RadzenGridColumn>
         <RadzenGridColumn Width="50px" TItem="Income" Property="Price" Title="Доход">
             <Template Context="income">
-                @string.Format(provider, "{0:C}", income.Price)
+                @string.Format(_provider, "{0:C}", income.Price)
             </Template>
             <FooterTemplate>
-                <b>@string.Format(provider, "{0:C}", incomes.Sum(o => o.Price))</b>
+                <b>@string.Format(_provider, "{0:C}", _incomes.Sum(o => o.Price))</b>
             </FooterTemplate>
             <EditTemplate Context="income">
                 <RadzenNumeric @bind-Value="income.Price" Style="width:100%" />
@@ -58,7 +59,7 @@
 <RadzenGrid @ref="expensesGrid" AllowFiltering="false" AllowPaging="true" PageSize="4" AllowSorting="true" EditMode="DataGridEditMode.Single"
             Data="@expenses" TItem="Expense" RowUpdate="@OnUpdateRowExpense" RowCreate="@OnCreateRowExpense">
     <Columns>
-        <RadzenGridColumn Visible = "false" Width="100px" TItem="Expense" Property="Id" Title="Id" />
+        <RadzenGridColumn Visible="false" Width="100px" TItem="Expense" Property="Id" Title="Id" />
         <RadzenGridColumn Width="15px" TItem="Expense" Property="OrderNumber" Title="№" />
         <RadzenGridColumn Width="200px" TItem="Expense" Property="Name" Title="Название">
             <EditTemplate Context="expense">
@@ -68,10 +69,10 @@
         </RadzenGridColumn>
         <RadzenGridColumn Width="50px" TItem="Expense" Property="Price" Title="Расход">
             <Template Context="expense">
-                @string.Format(provider, "{0:C}", expense.Price)
+                @string.Format(_provider, "{0:C}", expense.Price)
             </Template>
             <FooterTemplate>
-                <b>@string.Format(provider, "{0:C}", expenses.Sum(o => o.Price))</b>
+                <b>@string.Format(_provider, "{0:C}", expenses.Sum(o => o.Price))</b>
             </FooterTemplate>
             <EditTemplate Context="expense">
                 <RadzenNumeric @bind-Value="expense.Price" Style="width:100%" />
