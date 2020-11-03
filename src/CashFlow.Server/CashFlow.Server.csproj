@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.9" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="3.2.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CashFlow.DataProvider.EFCore\CashFlow.DataProvider.EFCore.csproj" />
+    <ProjectReference Include="..\CashFlow.Server.Lib\CashFlow.Server.Lib.csproj" />
+    <ProjectReference Include="..\CashFlow.WebClient\CashFlow.WebClient.csproj" />
+  </ItemGroup>
+
+</Project>
