@@ -32,12 +32,20 @@ namespace CashFlow.Server.Extensions
             using var appContext = scope.ServiceProvider.GetRequiredService<DataContext>();
             try
             {
-                appContext.Incomes.AddRange(new List<Income>
+                appContext.Incomes.AddRange(new []
                 {
                     new Income { Name = "Зарплата", Price = 100000, OrderNumber = 1 },
                     new Income { Name = "Дивиденты по акциям компании Apple", Price = 250, OrderNumber = 2 }
                 });
 
+                appContext.Expenses.AddRange(new []
+                {
+                    new Expense { Id = Guid.NewGuid().ToString(), Name = "Квартира", Price = 15000, OrderNumber = 1 },
+                    new Expense { Id = Guid.NewGuid().ToString(), Name = "Продукты", Price = 15000, OrderNumber = 2 },
+                    new Expense { Id = Guid.NewGuid().ToString(), Name = "Прочие расходы", Price = 10000, OrderNumber = 3 },
+                    new Expense { Id = Guid.NewGuid().ToString(), Name = "Платеж по ипотеке", Price = 30000, OrderNumber = 4 }
+                });
+               
                 appContext.SaveChanges();
             }
             catch (Exception ex)

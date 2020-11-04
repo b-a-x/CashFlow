@@ -1,6 +1,6 @@
 ﻿namespace CashFlow.Model.Dto.Request
 {
-    public class IncomeDto
+    public class ExpenseDto
     {
         public string Id { get; set; }
         public string Name { get; set; }

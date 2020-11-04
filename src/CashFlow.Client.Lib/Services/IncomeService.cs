@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
@@ -8,7 +7,7 @@ using System.Threading.Tasks;
 using CashFlow.Model.Dto.Request;
 using CashFlow.Services.Interfaces;
 
-namespace CashFlow.WebClient.Services
+namespace CashFlow.Client.Lib.Services
 {
     public class IncomeService : IIncomeService
     {
@@ -33,7 +32,7 @@ namespace CashFlow.WebClient.Services
         {
             var bodyContent = new StringContent(JsonSerializer.Serialize(income), Encoding.UTF8, "application/json");
 
-            var refreshResult = await _client.PostAsync("api/income/updateincome", bodyContent);
+            var refreshResult = await _client.PutAsync("api/income/updateincome", bodyContent);
             if (!refreshResult.IsSuccessStatusCode)
                 throw new Exception(refreshResult.ToString());
 
@@ -41,11 +40,11 @@ namespace CashFlow.WebClient.Services
             return JsonSerializer.Deserialize<IncomeDto>(refreshContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
         }
 
-        public async Task<IncomeDto> CreateIncomeAsync(IncomeDto income)
+        public async Task<IncomeDto> CreateIncomeForUserAsync(IncomeDto income, string userId)
         {
             var bodyContent = new StringContent(JsonSerializer.Serialize(income), Encoding.UTF8, "application/json");
 
-            var refreshResult = await _client.PutAsync("api/income/createincome", bodyContent);
+            var refreshResult = await _client.PostAsync("api/income/createincomeforuser", bodyContent);
             if (!refreshResult.IsSuccessStatusCode)
                 throw new Exception(refreshResult.ToString());
 

@@ -21,6 +21,9 @@ namespace CashFlow.WebClient.Pages
         [Inject]
         private IIncomeService _incomeService { get; set; }
 
+        [Inject]
+        private IExpenseService _expenseService { get; set; }
+
         private string _titleTotalCashFlow;
         private float _totalIncome;
         private float _totalExpense;
@@ -51,8 +54,9 @@ namespace CashFlow.WebClient.Pages
         {
             _interceptor.RegisterEvent();
             _incomes = (List<IncomeDto>)await _incomeService.GetAllIncomeForUserAsync(string.Empty);
+            _expenses = (List<ExpenseDto>)await _expenseService.GetAllExpenseForUserAsync(string.Empty);
             TotalIncome = _incomes.Sum(x => x.Price);
-            TotalExpense = expenses.Sum(x => x.Price);
+            TotalExpense = _expenses.Sum(x => x.Price);
             await base.OnInitializedAsync();
         }
 
@@ -65,12 +69,7 @@ namespace CashFlow.WebClient.Pages
 
         private void InsertRowIncome()
         {
-            var income = new IncomeDto
-            {
-                OrderNumber = (_incomes.OrderByDescending(x => x.OrderNumber).FirstOrDefault()?.OrderNumber ?? 0) + 1
-            };
-
-            _incomesGrid.InsertRow(income);
+            _incomesGrid.InsertRow(new IncomeDto { OrderNumber = (_incomes.OrderByDescending(x => x.OrderNumber).FirstOrDefault()?.OrderNumber ?? 0) + 1 });
         }
 
         private async Task OnUpdateRowIncome(IncomeDto income)
@@ -88,7 +87,7 @@ namespace CashFlow.WebClient.Pages
 
         private async Task OnCreateRowIncome(IncomeDto income)
         {
-            income = await _incomeService.CreateIncomeAsync(income);
+            income = await _incomeService.CreateIncomeForUserAsync(income, string.Empty);
             _incomes.Add(income);
             TotalIncome = _incomes.Sum(x => x.Price);
             await _incomesGrid.Reload();
@@ -124,77 +123,62 @@ namespace CashFlow.WebClient.Pages
             }
         }
 
-        public class Expense
-        {
-            public string Id { get; set; }
-            public string Name { get; set; }
-            public float Price { get; set; }
-            public int OrderNumber { get; set; }
-        }
-        private RadzenGrid<Expense> expensesGrid;
-        private List<Expense> expenses = new List<Expense>
-        {
-            new Expense{Id = Guid.NewGuid().ToString(), Name = "Квартира", Price = 15000, OrderNumber = 1},
-            new Expense{Id = Guid.NewGuid().ToString(), Name = "Продукты", Price = 15000, OrderNumber = 2},
-            new Expense{Id = Guid.NewGuid().ToString(), Name = "Прочие расходы", Price = 10000, OrderNumber = 3},
-            new Expense{Id = Guid.NewGuid().ToString(), Name = "Платеж по ипотеке", Price = 30000, OrderNumber = 4}
-        };
-
+        private RadzenGrid<ExpenseDto> _expensesGrid;
+        private List<ExpenseDto> _expenses = new List<ExpenseDto>();
+        
         private void InsertRowExpense()
         {
-            var expense = new Expense();
-            var id = (expenses.OrderByDescending(x => x.OrderNumber).FirstOrDefault()?.OrderNumber ?? 0) + 1;
-            expense.OrderNumber = id;
-            expensesGrid.InsertRow(expense);
+            _expensesGrid.InsertRow(new ExpenseDto{ OrderNumber = (_expenses.OrderByDescending(x => x.OrderNumber).FirstOrDefault()?.OrderNumber ?? 0) + 1 });
         }
 
-        private void OnUpdateRowExpense(Expense expense)
+        private async Task OnUpdateRowExpense(ExpenseDto expense)
         {
-            //TODO Научиться правильно пределять объект
-            foreach (Expense item in expenses)
+            ExpenseDto edit = _expenses.FirstOrDefault(x => x.Id == expense.Id);
+            if (edit != null)
             {
-                if (item.Id == expense.Id)
-                {
-                    item.Name = expense.Name;
-                    item.Price = expense.Price;
-                }
+                edit.Name = expense.Name;
+                edit.Price = expense.Price;
+                await _expenseService.UpdateExpenseAsync(edit);
             }
-            TotalExpense = expenses.Sum(x => x.Price);
+
+            TotalExpense = _expenses.Sum(x => x.Price);
         }
 
-        private void OnCreateRowExpense(Expense expense)
+        private async Task OnCreateRowExpense(ExpenseDto expense)
         {
-            expenses.Add(expense);
-            TotalExpense = expenses.Sum(x => x.Price);
+            expense = await _expenseService.CreateExpenseForUserAsync(expense, string.Empty);
+            _expenses.Add(expense);
+            TotalExpense = _expenses.Sum(x => x.Price);
+            await _expensesGrid.Reload();
         }
 
-        private void EditRowExpense(Expense expense)
+        private void EditRowExpense(ExpenseDto expense)
         {
-            expensesGrid.EditRow(expense);
+            _expensesGrid.EditRow(expense);
         }
 
-        private void SaveRowExpense(Expense expense)
+        private void SaveRowExpense(ExpenseDto expense)
         {
-            expensesGrid.UpdateRow(expense);
+            _expensesGrid.UpdateRow(expense);
         }
 
-        private void CancelEditExpense(Expense expense)
+        private void CancelEditExpense(ExpenseDto expense)
         {
-            expensesGrid.CancelEditRow(expense);
+            _expensesGrid.CancelEditRow(expense);
         }
 
-        private void DeleteRowExpense(Expense expense)
+        private async Task DeleteRowExpense(ExpenseDto expense)
         {
-            //TODO Научиться правильно пределять объект
-            if (expenses.Contains(expense))
+            if (_expenses.Contains(expense))
             {
-                expenses.Remove(expense);
-                expensesGrid.Reload();
-                TotalExpense = expenses.Sum(x => x.Price);
+                _expenses.Remove(expense);
+                TotalExpense = _expenses.Sum(x => x.Price);
+                await _expensesGrid.Reload();
+                await _expenseService.RemoveExpenseAsync(expense.Id);
             }
             else
             {
-                expensesGrid.CancelEditRow(expense);
+                _expensesGrid.CancelEditRow(expense);
             }
         }
     }

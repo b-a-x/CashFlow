@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Blazored.LocalStorage;
+using CashFlow.Client.Lib.Services;
 using CashFlow.Services.Interfaces;
 using CashFlow.WebClient.Providers;
 using CashFlow.WebClient.Services;
@@ -20,12 +21,13 @@ namespace CashFlow.WebClient
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             builder.RootComponents.Add<App>("app");
 
-            builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+            builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) }.EnableIntercept(sp));
             builder.Services.AddScoped<AuthenticationStateProvider, AuthStateProvider>();
             builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
             builder.Services.AddScoped<RefreshTokenService>();
             builder.Services.AddScoped<HttpInterceptorService>();
             builder.Services.AddScoped<IIncomeService, IncomeService>();
+            builder.Services.AddScoped<IExpenseService, ExpenseService>();
 
             builder.Services.AddSingleton<IFormatProvider>(new CultureInfo("ru-RU"));
 

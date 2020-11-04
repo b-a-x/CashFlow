@@ -3,7 +3,7 @@ using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Blazored.LocalStorage;
-using CashFlow.WebClient.Utils;
+using CashFlow.Client.Lib.Helpers;
 using Microsoft.AspNetCore.Components.Authorization;
 
 namespace CashFlow.WebClient.Providers

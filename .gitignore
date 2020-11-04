@@ -23,3 +23,5 @@
 /src/CashFlow.Services.Interfaces/obj
 /src/CashFlow.WebClient/bin
 /src/CashFlow.WebClient/obj
+/src/CashFlow.Client.Lib/bin
+/src/CashFlow.Client.Lib/obj

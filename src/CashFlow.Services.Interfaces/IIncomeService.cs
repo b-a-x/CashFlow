@@ -8,7 +8,7 @@ namespace CashFlow.Services.Interfaces
     {
         Task<IReadOnlyCollection<IncomeDto>> GetAllIncomeForUserAsync(string userId);
         Task<IncomeDto> UpdateIncomeAsync(IncomeDto income);
-        Task<IncomeDto> CreateIncomeAsync(IncomeDto income);
+        Task<IncomeDto> CreateIncomeForUserAsync(IncomeDto income, string userId);
         Task RemoveIncomeAsync(string id);
     }
 }

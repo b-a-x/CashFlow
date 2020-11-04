@@ -1,17 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
+﻿using System.Security.Claims;
 using System.Threading.Tasks;
-using CashFlow.Model;
 using CashFlow.Model.Dto.Request;
 using CashFlow.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CashFlow.Server.Controllers
 {
     [Route("api/income")]
     [ApiController]
+    [Authorize]
     public class IncomeController : ControllerBase
     {
         private readonly IIncomeService _incomeService;
@@ -23,24 +21,24 @@ namespace CashFlow.Server.Controllers
 
         [HttpGet]
         [Route("getallincomeforuser")]
-        public async Task<IActionResult> GetAllForUser()
+        public async Task<IActionResult> GetAllIncomeForUser()
         {
             //TODO: Вынести получение id user
             return Ok(await _incomeService.GetAllIncomeForUserAsync(User.FindFirstValue(ClaimTypes.NameIdentifier)));
         }
 
-        [HttpPost]
+        [HttpPut]
         [Route("updateincome")]
         public async Task<IActionResult> UpdateIncome([FromBody] IncomeDto income)
         {
             return Ok(await _incomeService.UpdateIncomeAsync(income));
         }
 
-        [HttpPut]
-        [Route("createincome")]
-        public async Task<IActionResult> CreateIncome([FromBody] IncomeDto income)
+        [HttpPost]
+        [Route("createincomeforuser")]
+        public async Task<IActionResult> CreateIncomeForUser([FromBody] IncomeDto income)
         {
-            return Ok(await _incomeService.CreateIncomeAsync(income));
+            return Ok(await _incomeService.CreateIncomeForUserAsync(income, User.FindFirstValue(ClaimTypes.NameIdentifier)));
         }
 
         [HttpDelete]

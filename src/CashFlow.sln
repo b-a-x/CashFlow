@@ -3,21 +3,23 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30626.31
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CashFlow.Server", "CashFlow.Server\CashFlow.Server.csproj", "{C21D66EC-190F-4A64-86E7-CBA0C97D3DA6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CashFlow.Server", "CashFlow.Server\CashFlow.Server.csproj", "{C21D66EC-190F-4A64-86E7-CBA0C97D3DA6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CashFlow.Server.Lib", "CashFlow.Server.Lib\CashFlow.Server.Lib.csproj", "{0E936EB5-1CFD-462C-A1E3-6430D83BFF06}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CashFlow.Server.Lib", "CashFlow.Server.Lib\CashFlow.Server.Lib.csproj", "{0E936EB5-1CFD-462C-A1E3-6430D83BFF06}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CashFlow.DataProvider.EFCore", "CashFlow.DataProvider.EFCore\CashFlow.DataProvider.EFCore.csproj", "{27E38FB0-F421-46DA-8F46-BD129BAF3D11}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CashFlow.DataProvider.EFCore", "CashFlow.DataProvider.EFCore\CashFlow.DataProvider.EFCore.csproj", "{27E38FB0-F421-46DA-8F46-BD129BAF3D11}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CashFlow.DataProvider.Interfaces", "CashFlow.DataProvider.Interfaces\CashFlow.DataProvider.Interfaces.csproj", "{D3C9D1B6-14EB-47E0-905C-44DBA5417151}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CashFlow.DataProvider.Interfaces", "CashFlow.DataProvider.Interfaces\CashFlow.DataProvider.Interfaces.csproj", "{D3C9D1B6-14EB-47E0-905C-44DBA5417151}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CashFlow.Model", "CashFlow.Model\CashFlow.Model.csproj", "{2EDAEE93-6B96-401D-9163-865957CBC7B5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CashFlow.Model", "CashFlow.Model\CashFlow.Model.csproj", "{2EDAEE93-6B96-401D-9163-865957CBC7B5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CashFlow.Model.Dto", "CashFlow.Model.Dto\CashFlow.Model.Dto.csproj", "{9204AA54-CADE-4FBD-AB85-30C26CD3A817}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CashFlow.Model.Dto", "CashFlow.Model.Dto\CashFlow.Model.Dto.csproj", "{9204AA54-CADE-4FBD-AB85-30C26CD3A817}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CashFlow.Services.Interfaces", "CashFlow.Services.Interfaces\CashFlow.Services.Interfaces.csproj", "{5451E7AC-FD91-4F75-A4B6-0A5010A58A84}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CashFlow.Services.Interfaces", "CashFlow.Services.Interfaces\CashFlow.Services.Interfaces.csproj", "{5451E7AC-FD91-4F75-A4B6-0A5010A58A84}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CashFlow.WebClient", "CashFlow.WebClient\CashFlow.WebClient.csproj", "{14EAB334-C00C-4B0D-87F1-833E6CE10533}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CashFlow.WebClient", "CashFlow.WebClient\CashFlow.WebClient.csproj", "{14EAB334-C00C-4B0D-87F1-833E6CE10533}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CashFlow.Client.Lib", "CashFlow.Client.Lib\CashFlow.Client.Lib.csproj", "{42453018-DF62-4352-8686-FEC63177EDFA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -57,6 +59,10 @@ Global
 		{14EAB334-C00C-4B0D-87F1-833E6CE10533}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{14EAB334-C00C-4B0D-87F1-833E6CE10533}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{14EAB334-C00C-4B0D-87F1-833E6CE10533}.Release|Any CPU.Build.0 = Release|Any CPU
+		{42453018-DF62-4352-8686-FEC63177EDFA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{42453018-DF62-4352-8686-FEC63177EDFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{42453018-DF62-4352-8686-FEC63177EDFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{42453018-DF62-4352-8686-FEC63177EDFA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

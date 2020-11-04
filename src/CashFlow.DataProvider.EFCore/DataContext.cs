@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using CashFlow.DataProvider.EFCore.Configuration;
+﻿using CashFlow.DataProvider.EFCore.Configuration;
 using CashFlow.DataProvider.EFCore.Model;
 using CashFlow.Model;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -17,6 +14,7 @@ namespace CashFlow.DataProvider.EFCore
         }
 
         public DbSet<Income> Incomes { get; set; }
+        public DbSet<Expense> Expenses { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -24,6 +22,7 @@ namespace CashFlow.DataProvider.EFCore
 
             modelBuilder.ApplyConfiguration(new RoleConfiguration());
             modelBuilder.ApplyConfiguration(new IncomeConfiguration());
+            modelBuilder.ApplyConfiguration(new ExpenseConfiguration());
         }
     }
 }

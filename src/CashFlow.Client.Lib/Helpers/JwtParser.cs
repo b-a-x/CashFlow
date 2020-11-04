@@ -4,7 +4,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text.Json;
 
-namespace CashFlow.WebClient.Utils
+namespace CashFlow.Client.Lib.Helpers
 {
     public static class JwtParser
     {

@@ -19,7 +19,7 @@ namespace CashFlow.Server.Lib.Services
 
         public Task<IncomeDto> UpdateIncomeAsync(IncomeDto income) => _provider.UpdateIncomeAsync(income);
 
-        public Task<IncomeDto> CreateIncomeAsync(IncomeDto income) => _provider.CreateIncomeAsync(income);
+        public Task<IncomeDto> CreateIncomeForUserAsync(IncomeDto income, string userId) => _provider.CreateIncomeForUserAsync(income, userId);
 
         public Task RemoveIncomeAsync(string id) =>
             _provider.RemoveIncomeAsync(id);

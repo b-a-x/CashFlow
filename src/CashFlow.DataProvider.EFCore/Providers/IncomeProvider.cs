@@ -42,16 +42,23 @@ namespace CashFlow.DataProvider.EFCore.Providers
             return income;
         }
 
-        public async Task<IncomeDto> CreateIncomeAsync(IncomeDto income)
+        public async Task<IncomeDto> CreateIncomeForUserAsync(IncomeDto income, string userId)
         {
-            await _context.Incomes.AddAsync(new Income
+            var newIncome = new Income
             {
                 Name = income.Name,
                 OrderNumber = income.OrderNumber,
-                Price = income.Price
-            });
-
+                Price = income.Price,
+                UserId = userId
+            };
+            await _context.Incomes.AddAsync(newIncome);
             await _context.SaveChangesAsync();
+            
+            income.Id = newIncome.Id;
+            income.Name = newIncome.Name;
+            income.OrderNumber = newIncome.OrderNumber;
+            income.Price = newIncome.Price;
+
             return income;
         }
 

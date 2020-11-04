@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace CashFlow.DataProvider.EFCore.Configuration
 {
-    public class IncomeConfiguration : IEntityTypeConfiguration<Income>
+    public class ExpenseConfiguration : IEntityTypeConfiguration<Expense>
     {
-        public void Configure(EntityTypeBuilder<Income> builder)
+        public void Configure(EntityTypeBuilder<Expense> builder)
         {
-            builder.ToTable("Incomes");
+            builder.ToTable("Expenses");
 
             builder.HasKey(p => p.Id);
             builder.HasIndex(p => p.Id).IsUnique();

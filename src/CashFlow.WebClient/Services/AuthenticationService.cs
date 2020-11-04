@@ -87,8 +87,12 @@ namespace CashFlow.WebClient.Services
 			var refreshContent = await refreshResult.Content.ReadAsStringAsync();
 			var result = JsonSerializer.Deserialize<AuthResponseDto>(refreshContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
-			if (!refreshResult.IsSuccessStatusCode)
-				throw new ApplicationException("Something went wrong during the refresh token action");
+            if (!refreshResult.IsSuccessStatusCode)
+            {
+                await Logout();
+				return string.Empty;
+                //throw new ApplicationException("Something went wrong during the refresh token action");
+            }
 
 			await _localStorage.SetItemAsync("authToken", result.Token);
 			await _localStorage.SetItemAsync("refreshToken", result.RefreshToken);
