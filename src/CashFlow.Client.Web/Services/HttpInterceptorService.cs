@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Toolbelt.Blazor;
 
-namespace CashFlow.WebClient.Services
+namespace CashFlow.Client.Web.Services
 {
     public class HttpInterceptorService
     {

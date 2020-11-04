@@ -4,11 +4,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using CashFlow.Model.Dto.Request;
 using CashFlow.Services.Interfaces;
-using CashFlow.WebClient.Services;
+using CashFlow.Client.Web.Services;
 using Microsoft.AspNetCore.Components;
 using Radzen.Blazor;
 
-namespace CashFlow.WebClient.Pages
+namespace CashFlow.Client.Web.Pages
 {
     public partial class IncomeExpense
     {

@@ -17,9 +17,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CashFlow.Model.Dto", "CashF
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CashFlow.Services.Interfaces", "CashFlow.Services.Interfaces\CashFlow.Services.Interfaces.csproj", "{5451E7AC-FD91-4F75-A4B6-0A5010A58A84}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CashFlow.WebClient", "CashFlow.WebClient\CashFlow.WebClient.csproj", "{14EAB334-C00C-4B0D-87F1-833E6CE10533}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CashFlow.Client.Lib", "CashFlow.Client.Lib\CashFlow.Client.Lib.csproj", "{42453018-DF62-4352-8686-FEC63177EDFA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CashFlow.Client.Lib", "CashFlow.Client.Lib\CashFlow.Client.Lib.csproj", "{42453018-DF62-4352-8686-FEC63177EDFA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CashFlow.Client.Web", "CashFlow.Client.Web\CashFlow.Client.Web.csproj", "{31443037-E396-4773-90EA-D1DDEF353AAC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -55,14 +55,14 @@ Global
 		{5451E7AC-FD91-4F75-A4B6-0A5010A58A84}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5451E7AC-FD91-4F75-A4B6-0A5010A58A84}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5451E7AC-FD91-4F75-A4B6-0A5010A58A84}.Release|Any CPU.Build.0 = Release|Any CPU
-		{14EAB334-C00C-4B0D-87F1-833E6CE10533}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{14EAB334-C00C-4B0D-87F1-833E6CE10533}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{14EAB334-C00C-4B0D-87F1-833E6CE10533}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{14EAB334-C00C-4B0D-87F1-833E6CE10533}.Release|Any CPU.Build.0 = Release|Any CPU
 		{42453018-DF62-4352-8686-FEC63177EDFA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{42453018-DF62-4352-8686-FEC63177EDFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{42453018-DF62-4352-8686-FEC63177EDFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{42453018-DF62-4352-8686-FEC63177EDFA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{31443037-E396-4773-90EA-D1DDEF353AAC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{31443037-E396-4773-90EA-D1DDEF353AAC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{31443037-E396-4773-90EA-D1DDEF353AAC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{31443037-E396-4773-90EA-D1DDEF353AAC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

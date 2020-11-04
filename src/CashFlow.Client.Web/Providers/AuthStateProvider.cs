@@ -6,7 +6,7 @@ using Blazored.LocalStorage;
 using CashFlow.Client.Lib.Helpers;
 using Microsoft.AspNetCore.Components.Authorization;
 
-namespace CashFlow.WebClient.Providers
+namespace CashFlow.Client.Web.Providers
 {
     public class AuthStateProvider : AuthenticationStateProvider
     {

@@ -1,8 +1,8 @@
 ﻿using System.Threading.Tasks;
-using CashFlow.WebClient.Services;
+using CashFlow.Client.Web.Services;
 using Microsoft.AspNetCore.Components;
 
-namespace CashFlow.WebClient.Pages
+namespace CashFlow.Client.Web.Pages
 {
     public partial class Logout
     {

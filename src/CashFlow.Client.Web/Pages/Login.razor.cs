@@ -1,9 +1,9 @@
 ﻿using System.Threading.Tasks;
+using CashFlow.Client.Web.Services;
 using CashFlow.Model.Dto.Request;
-using CashFlow.WebClient.Services;
 using Microsoft.AspNetCore.Components;
 
-namespace CashFlow.WebClient.Pages
+namespace CashFlow.Client.Web.Pages
 {
     public partial class Login
     {

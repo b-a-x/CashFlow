@@ -1,16 +1,15 @@
-﻿using System;
-using System.Net.Http;
+﻿using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Blazored.LocalStorage;
+using CashFlow.Client.Web.Providers;
 using CashFlow.Model.Dto.Request;
 using CashFlow.Model.Dto.Response;
-using CashFlow.WebClient.Providers;
 using Microsoft.AspNetCore.Components.Authorization;
 
-namespace CashFlow.WebClient.Services
+namespace CashFlow.Client.Web.Services
 {
 	public interface IAuthenticationService
 	{

@@ -6,13 +6,13 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Blazored.LocalStorage;
 using CashFlow.Client.Lib.Services;
+using CashFlow.Client.Web.Providers;
+using CashFlow.Client.Web.Services;
 using CashFlow.Services.Interfaces;
-using CashFlow.WebClient.Providers;
-using CashFlow.WebClient.Services;
 using Microsoft.AspNetCore.Components.Authorization;
 using Toolbelt.Blazor.Extensions.DependencyInjection;
 
-namespace CashFlow.WebClient
+namespace CashFlow.Client.Web
 {
     public class Program
     {

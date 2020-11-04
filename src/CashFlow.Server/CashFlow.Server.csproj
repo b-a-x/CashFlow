@@ -10,9 +10,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CashFlow.Client.Web\CashFlow.Client.Web.csproj" />
     <ProjectReference Include="..\CashFlow.DataProvider.EFCore\CashFlow.DataProvider.EFCore.csproj" />
     <ProjectReference Include="..\CashFlow.Server.Lib\CashFlow.Server.Lib.csproj" />
-    <ProjectReference Include="..\CashFlow.WebClient\CashFlow.WebClient.csproj" />
   </ItemGroup>
 
 </Project>

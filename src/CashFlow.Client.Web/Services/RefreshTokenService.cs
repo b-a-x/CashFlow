@@ -3,7 +3,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components.Authorization;
 
-namespace CashFlow.WebClient.Services
+namespace CashFlow.Client.Web.Services
 {
     public class RefreshTokenService
     {

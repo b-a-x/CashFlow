@@ -25,3 +25,5 @@
 /src/CashFlow.WebClient/obj
 /src/CashFlow.Client.Lib/bin
 /src/CashFlow.Client.Lib/obj
+/src/CashFlow.Client.Web/bin/Debug/netstandard2.1
+/src/CashFlow.Client.Web/obj

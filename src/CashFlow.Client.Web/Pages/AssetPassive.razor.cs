@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using CashFlow.WebClient.Services;
+using CashFlow.Client.Web.Services;
 using Microsoft.AspNetCore.Components;
 using Radzen.Blazor;
 
-namespace CashFlow.WebClient.Pages
+namespace CashFlow.Client.Web.Pages
 {
     public partial class AssetPassive
     {
