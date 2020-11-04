@@ -28,6 +28,7 @@ namespace CashFlow.Client.Web
             builder.Services.AddScoped<HttpInterceptorService>();
             builder.Services.AddScoped<IIncomeService, IncomeService>();
             builder.Services.AddScoped<IExpenseService, ExpenseService>();
+            builder.Services.AddScoped<IAssetService, AssetService>();
 
             builder.Services.AddSingleton<IFormatProvider>(new CultureInfo("ru-RU"));
 

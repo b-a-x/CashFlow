@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CashFlow.Client.Web.Services;
+using CashFlow.Model.Dto.Request;
+using CashFlow.Services.Interfaces;
 using Microsoft.AspNetCore.Components;
 using Radzen.Blazor;
 
@@ -11,87 +13,77 @@ namespace CashFlow.Client.Web.Pages
     public partial class AssetPassive
     {
         [Inject]
-        private IFormatProvider provider { get; set; }
+        private IFormatProvider _provider { get; set; }
 
         [Inject]
-        public HttpInterceptorService interceptor { get; set; }
+        public HttpInterceptorService _interceptor { get; set; }
 
-        protected override Task OnInitializedAsync()
+        [Inject]
+        public IAssetService _assetService { get; set; }
+
+        protected override async Task OnInitializedAsync()
         {
-            interceptor.RegisterEvent();
-            return base.OnInitializedAsync();
+            _interceptor.RegisterEvent();
+            _assets = (List<AssetDto>)await _assetService.GetAllAssetForUserAsync(string.Empty);
+            //_expenses = (List<ExpenseDto>)await _expenseService.GetAllExpenseForUserAsync(string.Empty);
+            await base.OnInitializedAsync();
         }
 
-        public void Dispose() => interceptor.DisposeEvent();
+        public void Dispose() => _interceptor.DisposeEvent();
 
-        public class Asset
-        {
-            public string Id { get; set; }
-            public string Name { get; set; }
-            public int Quantity { get; set; }
-            public float Price { get; set; }
-            public int OrderNumber { get; set; }
-        }
-
-        private RadzenGrid<Asset> assetGrid;
-        private List<Asset> assets = new List<Asset>
-        {
-            new Asset{Id = Guid.NewGuid().ToString(), Name = "Акции компании Apple", Quantity = 10, Price = 100000, OrderNumber = 1}
-        };
+        private RadzenGrid<AssetDto> _assetGrid;
+        private List<AssetDto> _assets = new List<AssetDto>();
 
         private void InsertRowAsset()
         {
-            var asset = new Asset();
-            var id = (assets.OrderByDescending(x => x.OrderNumber).FirstOrDefault()?.OrderNumber ?? 0) + 1;
-            asset.OrderNumber = id;
-            assetGrid.InsertRow(asset);
+            _assetGrid.InsertRow(new AssetDto { OrderNumber = (_assets.OrderByDescending(x => x.OrderNumber).FirstOrDefault()?.OrderNumber ?? 0) + 1 });
         }
 
-        private void OnUpdateRowAsset(Asset asset)
+        private async Task OnUpdateRowAsset(AssetDto asset)
         {
-            //TODO Научиться правильно пределять объект
-            foreach (Asset item in assets)
+            AssetDto edit = _assets.FirstOrDefault(x => x.Id == asset.Id);
+            if (edit != null)
             {
-                if (item.Id == asset.Id)
-                {
-                    item.Name = asset.Name;
-                    item.Quantity = asset.Quantity;
-                    item.Price = asset.Price;
-                }
+                edit.Name = asset.Name;
+                edit.Price = asset.Price;
+                edit.Quantity = asset.Quantity;
+                await _assetService.UpdateAssetAsync(edit);
             }
         }
 
-        private void OnCreateRowAsset(Asset asset)
+        private async Task OnCreateRowAsset(AssetDto asset)
         {
-            assets.Add(asset);
+            asset = await _assetService.CreateAssetForUserAsync(asset, string.Empty);
+            _assets.Add(asset);
+            await _assetGrid.Reload();
         }
 
-        private void EditRowAsset(Asset asset)
+        private void EditRowAsset(AssetDto asset)
         {
-            assetGrid.EditRow(asset);
+            _assetGrid.EditRow(asset);
         }
 
-        private void SaveRowAsset(Asset asset)
+        private void SaveRowAsset(AssetDto asset)
         {
-            assetGrid.UpdateRow(asset);
+            _assetGrid.UpdateRow(asset);
         }
 
-        private void CancelEditAsset(Asset asset)
+        private void CancelEditAsset(AssetDto asset)
         {
-            assetGrid.CancelEditRow(asset);
+            _assetGrid.CancelEditRow(asset);
         }
 
-        private void DeleteRowAsset(Asset asset)
+        private async Task DeleteRowAsset(AssetDto asset)
         {
-            //TODO Научиться правильно пределять объект
-            if (assets.Contains(asset))
+            if (_assets.Contains(asset))
             {
-                assets.Remove(asset);
-                assetGrid.Reload();
+                _assets.Remove(asset);
+                await _assetGrid.Reload();
+                await _assetService.RemoveAssetAsync(asset.Id);
             }
             else
             {
-                assetGrid.CancelEditRow(asset);
+                _assetGrid.CancelEditRow(asset);
             }
         }
 

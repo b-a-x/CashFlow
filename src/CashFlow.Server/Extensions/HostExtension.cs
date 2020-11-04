@@ -40,10 +40,15 @@ namespace CashFlow.Server.Extensions
 
                 appContext.Expenses.AddRange(new []
                 {
-                    new Expense { Id = Guid.NewGuid().ToString(), Name = "Квартира", Price = 15000, OrderNumber = 1 },
-                    new Expense { Id = Guid.NewGuid().ToString(), Name = "Продукты", Price = 15000, OrderNumber = 2 },
-                    new Expense { Id = Guid.NewGuid().ToString(), Name = "Прочие расходы", Price = 10000, OrderNumber = 3 },
-                    new Expense { Id = Guid.NewGuid().ToString(), Name = "Платеж по ипотеке", Price = 30000, OrderNumber = 4 }
+                    new Expense { Name = "Квартира", Price = 15000, OrderNumber = 1 },
+                    new Expense { Name = "Продукты", Price = 15000, OrderNumber = 2 },
+                    new Expense { Name = "Прочие расходы", Price = 10000, OrderNumber = 3 },
+                    new Expense { Name = "Платеж по ипотеке", Price = 30000, OrderNumber = 4 }
+                });
+                
+                appContext.Assets.AddRange(new []
+                {
+                    new Asset{ Name = "Акции компании Apple", Quantity = 10, Price = 100000, OrderNumber = 1}
                 });
                
                 appContext.SaveChanges();

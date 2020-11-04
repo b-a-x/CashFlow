@@ -15,6 +15,7 @@ namespace CashFlow.DataProvider.EFCore
 
         public DbSet<Income> Incomes { get; set; }
         public DbSet<Expense> Expenses { get; set; }
+        public DbSet<Asset> Assets { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -23,6 +24,7 @@ namespace CashFlow.DataProvider.EFCore
             modelBuilder.ApplyConfiguration(new RoleConfiguration());
             modelBuilder.ApplyConfiguration(new IncomeConfiguration());
             modelBuilder.ApplyConfiguration(new ExpenseConfiguration());
+            modelBuilder.ApplyConfiguration(new AssetConfiguration());
         }
     }
 }

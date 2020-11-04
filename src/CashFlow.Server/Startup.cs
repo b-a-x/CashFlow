@@ -65,11 +65,15 @@ namespace CashFlow.Server
                 };
             });
 
+            services.AddScoped<ITokenService, TokenService>();
+
             services.AddScoped<IIncomeProvider, IncomeProvider>();
             services.AddScoped<IExpenseProvider, ExpenseProvider>();
-            services.AddScoped<ITokenService, TokenService>();
+            services.AddScoped<IAssetProvider, AssetProvider>();
+            
             services.AddScoped<IIncomeService, IncomeService>();
             services.AddScoped<IExpenseService, ExpenseService>();
+            services.AddScoped<IAssetService, AssetService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
