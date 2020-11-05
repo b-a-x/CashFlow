@@ -44,12 +44,21 @@ namespace CashFlow.DataProvider.EFCore.Providers
 
         public async Task<PassiveDto> CreatePassiveForUserAsync(PassiveDto passive, string userId)
         {
+            //TODO: бизенс логику убрать в menager, сделать в одной транзакции
+            //TODO: Тест выборка
+            var orderNumber = _context.Expenses
+                .Where(x => x.UserId == userId || x.UserId == null || x.UserId == string.Empty)
+                .OrderByDescending(x => x.OrderNumber).FirstOrDefault()?.OrderNumber + 1 ?? 1;
+            var newExpense = new Expense { Name = passive.Name, OrderNumber = orderNumber, Price = 0};
+            await _context.Expenses.AddAsync(newExpense);
+
             var newPassive = new Passive
             {
                 Name = passive.Name,
                 OrderNumber = passive.OrderNumber,
                 Price = passive.Price,
-                UserId = userId
+                UserId = userId,
+                ExpenseId = newExpense.Id
             };
             await _context.Passives.AddAsync(newPassive);
             await _context.SaveChangesAsync();
@@ -64,8 +73,11 @@ namespace CashFlow.DataProvider.EFCore.Providers
 
         public async Task RemovePassiveAsync(string id)
         {
+            //TODO: бизенс логику убрать в menager, сделать в одной транзакции
             Passive original = await _context.Passives.FindAsync(id);
+            Expense orign = await _context.Expenses.FindAsync(original.ExpenseId);
             _context.Passives.Remove(original);
+            _context.Expenses.Remove(orign);
             await _context.SaveChangesAsync();
         }
     }

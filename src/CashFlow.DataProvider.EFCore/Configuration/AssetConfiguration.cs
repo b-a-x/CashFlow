@@ -19,6 +19,8 @@ namespace CashFlow.DataProvider.EFCore.Configuration
             builder.Property(u => u.Price).HasColumnName("Price").IsRequired();
             builder.Property(u => u.UserId).HasColumnName("UserId").IsRequired();
             builder.HasIndex(p => p.UserId);
+            builder.Property(u => u.IncomeId).HasColumnName("IncomeId").IsRequired();
+            builder.HasIndex(p => p.IncomeId);
         }
     }
 }

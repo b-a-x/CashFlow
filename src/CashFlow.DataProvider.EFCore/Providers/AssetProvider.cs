@@ -45,29 +45,41 @@ namespace CashFlow.DataProvider.EFCore.Providers
 
         public async Task<AssetDto> CreateAssetForUserAsync(AssetDto asset, string userId)
         {
-            var newIncome = new Asset
+            //TODO: бизенс логику убрать в menager, сделать в одной транзакции
+            //TODO: Тест выборка
+            var orderNumber = _context.Incomes
+                .Where(x => x.UserId == userId || x.UserId == null || x.UserId == string.Empty)
+                .OrderByDescending(x => x.OrderNumber).FirstOrDefault()?.OrderNumber + 1 ?? 1;
+            var newIncome = new Income { Name = asset.Name, OrderNumber = orderNumber, Price = 0 };
+            await _context.Incomes.AddAsync(newIncome);
+
+            var newAsset = new Asset
             {
                 Name = asset.Name,
                 OrderNumber = asset.OrderNumber,
                 Price = asset.Price,
                 Quantity = asset.Quantity,
-                UserId = userId
+                UserId = userId,
+                IncomeId = newIncome.Id
             };
-            await _context.Assets.AddAsync(newIncome);
+            await _context.Assets.AddAsync(newAsset);
             await _context.SaveChangesAsync();
 
-            asset.Id = newIncome.Id;
-            asset.Name = newIncome.Name;
-            asset.OrderNumber = newIncome.OrderNumber;
-            asset.Price = newIncome.Price;
-            asset.Quantity = newIncome.Quantity;
+            asset.Id = newAsset.Id;
+            asset.Name = newAsset.Name;
+            asset.OrderNumber = newAsset.OrderNumber;
+            asset.Price = newAsset.Price;
+            asset.Quantity = newAsset.Quantity;
 
             return asset;
         }
 
         public async Task RemoveAssetAsync(string id)
         {
+            //TODO: бизенс логику убрать в menager, сделать в одной транзакции
             Asset original = await _context.Assets.FindAsync(id);
+            Income income = await _context.Incomes.FindAsync(original.IncomeId);
+            _context.Incomes.Remove(income);
             _context.Assets.Remove(original);
             await _context.SaveChangesAsync();
         }
