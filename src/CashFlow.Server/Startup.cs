@@ -70,10 +70,12 @@ namespace CashFlow.Server
             services.AddScoped<IIncomeProvider, IncomeProvider>();
             services.AddScoped<IExpenseProvider, ExpenseProvider>();
             services.AddScoped<IAssetProvider, AssetProvider>();
+            services.AddScoped<IPassiveProvider, PassiveProvider>();
             
             services.AddScoped<IIncomeService, IncomeService>();
             services.AddScoped<IExpenseService, ExpenseService>();
             services.AddScoped<IAssetService, AssetService>();
+            services.AddScoped<IPassiveService, PassiveService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

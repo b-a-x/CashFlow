@@ -20,12 +20,15 @@ namespace CashFlow.Client.Web.Pages
 
         [Inject]
         public IAssetService _assetService { get; set; }
+        
+        [Inject]
+        public IPassiveService _passiveService { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
             _interceptor.RegisterEvent();
             _assets = (List<AssetDto>)await _assetService.GetAllAssetForUserAsync(string.Empty);
-            //_expenses = (List<ExpenseDto>)await _expenseService.GetAllExpenseForUserAsync(string.Empty);
+            _passives = (List<PassiveDto>)await _passiveService.GetAllPassiveForUserAsync(string.Empty);
             await base.OnInitializedAsync();
         }
 
@@ -87,73 +90,60 @@ namespace CashFlow.Client.Web.Pages
             }
         }
 
-
-        public class Passive
-        {
-            public string Id { get; set; }
-            public string Name { get; set; }
-            public float Price { get; set; }
-            public int OrderNumber { get; set; }
-        }
-
-        private RadzenGrid<Passive> passiveGrid;
-        private List<Passive> passives = new List<Passive>
-        {
-            new Passive{Id = Guid.NewGuid().ToString(), Name = "Ипотека", Price = 5000000, OrderNumber = 1}
-        };
+        private RadzenGrid<PassiveDto> _passiveGrid;
+        private List<PassiveDto> _passives = new List<PassiveDto>();
 
         private void InsertRowPassive()
         {
-            var passive = new Passive();
-            var id = (passives.OrderByDescending(x => x.OrderNumber).FirstOrDefault()?.OrderNumber ?? 0) + 1;
-            passive.OrderNumber = id;
-            passiveGrid.InsertRow(passive);
+            _passiveGrid.InsertRow(new PassiveDto { OrderNumber = (_passives.OrderByDescending(x => x.OrderNumber).FirstOrDefault()?.OrderNumber ?? 0) + 1 });
         }
 
-        private void OnUpdateRowPassive(Passive passive)
+        private async Task OnUpdateRowPassive(PassiveDto passive)
         {
-            //TODO Научиться правильно пределять объект
-            foreach (Passive item in passives)
+            PassiveDto edit = _passives.FirstOrDefault(x => x.Id == passive.Id);
+            if (edit != null)
             {
-                if (item.Id == passive.Id)
-                {
-                    item.Name = passive.Name;
-                    item.Price = passive.Price;
-                }
+                edit.Name = passive.Name;
+                edit.Price = passive.Price;
+                edit.OrderNumber = passive.OrderNumber;
+                await _passiveService.UpdatePassiveAsync(edit);
             }
         }
 
-        private void OnCreateRowPassive(Passive passive)
+        private async Task OnCreateRowPassive(PassiveDto passive)
         {
-            passives.Add(passive);
+            passive = await _passiveService.CreatePassiveForUserAsync(passive, string.Empty);
+            _passives.Add(passive);
+            await _passiveGrid.Reload();
         }
 
-        private void EditRowPassive(Passive passive)
+        private void EditRowPassive(PassiveDto passive)
         {
-            passiveGrid.EditRow(passive);
+            _passiveGrid.EditRow(passive);
         }
 
-        private void SaveRowPassive(Passive passive)
+        private void SaveRowPassive(PassiveDto passive)
         {
-            passiveGrid.UpdateRow(passive);
+            _passiveGrid.UpdateRow(passive);
         }
 
-        private void CancelEditPassive(Passive passive)
+        private void CancelEditPassive(PassiveDto passive)
         {
-            passiveGrid.CancelEditRow(passive);
+            _passiveGrid.CancelEditRow(passive);
         }
 
-        private void DeleteRowPassive(Passive passive)
+        private async Task DeleteRowPassive(PassiveDto passive)
         {
             //TODO Научиться правильно пределять объект
-            if (passives.Contains(passive))
+            if (_passives.Contains(passive))
             {
-                passives.Remove(passive);
-                passiveGrid.Reload();
+                _passives.Remove(passive);
+                await _passiveGrid.Reload();
+                await _passiveService.RemovePassiveAsync(passive.Id);
             }
             else
             {
-                passiveGrid.CancelEditRow(passive);
+                _passiveGrid.CancelEditRow(passive);
             }
         }
     }

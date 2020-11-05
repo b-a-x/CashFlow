@@ -20,28 +20,28 @@ namespace CashFlow.Server.Controllers
         }
 
         [HttpGet]
-        [Route("getallassetforuser")]
+        [Route("getallforuser")]
         public async Task<IActionResult> GetAllAssetForUser()
         {
             return Ok(await _assetService.GetAllAssetForUserAsync(User.FindFirstValue(ClaimTypes.NameIdentifier)));
         }
 
         [HttpPut]
-        [Route("updateasset")]
+        [Route("update")]
         public async Task<IActionResult> UpdateAsset([FromBody] AssetDto asset)
         {
             return Ok(await _assetService.UpdateAssetAsync(asset));
         }
 
         [HttpPost]
-        [Route("createassetforuser")]
+        [Route("createforuser")]
         public async Task<IActionResult> CreateAssetForUser([FromBody] AssetDto asset)
         {
             return Ok(await _assetService.CreateAssetForUserAsync(asset, User.FindFirstValue(ClaimTypes.NameIdentifier)));
         }
 
         [HttpDelete]
-        [Route("removeasset")]
+        [Route("remove")]
         public async Task RemoveAsset([FromQuery] string id)
         {
             await _assetService.RemoveAssetAsync(id);

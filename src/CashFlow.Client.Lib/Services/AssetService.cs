@@ -20,7 +20,7 @@ namespace CashFlow.Client.Lib.Services
 
         public async Task<IReadOnlyCollection<AssetDto>> GetAllAssetForUserAsync(string userId)
         {
-            HttpResponseMessage registrationResult = await _client.GetAsync("api/asset/getallassetforuser");
+            HttpResponseMessage registrationResult = await _client.GetAsync("api/asset/getallforuser");
             if (!registrationResult.IsSuccessStatusCode)
                 throw new Exception(registrationResult.ToString());
 
@@ -32,7 +32,7 @@ namespace CashFlow.Client.Lib.Services
         {
             var bodyContent = new StringContent(JsonSerializer.Serialize(asset), Encoding.UTF8, "application/json");
 
-            var refreshResult = await _client.PutAsync("api/asset/updateasset", bodyContent);
+            var refreshResult = await _client.PutAsync("api/asset/update", bodyContent);
             if (!refreshResult.IsSuccessStatusCode)
                 throw new Exception(refreshResult.ToString());
 
@@ -44,7 +44,7 @@ namespace CashFlow.Client.Lib.Services
         {
             var bodyContent = new StringContent(JsonSerializer.Serialize(asset), Encoding.UTF8, "application/json");
 
-            var refreshResult = await _client.PostAsync("api/asset/createassetforuser", bodyContent);
+            var refreshResult = await _client.PostAsync("api/asset/createforuser", bodyContent);
             if (!refreshResult.IsSuccessStatusCode)
                 throw new Exception(refreshResult.ToString());
 
@@ -54,7 +54,7 @@ namespace CashFlow.Client.Lib.Services
 
         public async Task RemoveAssetAsync(string id)
         {
-            HttpResponseMessage registrationResult = await _client.DeleteAsync($"api/asset/removeasset?id={id}");
+            HttpResponseMessage registrationResult = await _client.DeleteAsync($"api/asset/remove?id={id}");
             if (!registrationResult.IsSuccessStatusCode)
                 throw new Exception(registrationResult.ToString());
         }

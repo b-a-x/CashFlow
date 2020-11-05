@@ -20,7 +20,7 @@ namespace CashFlow.Client.Lib.Services
 
         public async Task<IReadOnlyCollection<ExpenseDto>> GetAllExpenseForUserAsync(string userId)
         {
-            HttpResponseMessage registrationResult = await _client.GetAsync("api/expense/getallexpenseforuser");
+            HttpResponseMessage registrationResult = await _client.GetAsync("api/expense/getallforuser");
             if (!registrationResult.IsSuccessStatusCode)
                 throw new Exception(registrationResult.ToString());
 
@@ -32,7 +32,7 @@ namespace CashFlow.Client.Lib.Services
         {
             var bodyContent = new StringContent(JsonSerializer.Serialize(expense), Encoding.UTF8, "application/json");
 
-            var refreshResult = await _client.PutAsync("api/expense/updateexpense", bodyContent);
+            var refreshResult = await _client.PutAsync("api/expense/update", bodyContent);
             if (!refreshResult.IsSuccessStatusCode)
                 throw new Exception(refreshResult.ToString());
 
@@ -44,7 +44,7 @@ namespace CashFlow.Client.Lib.Services
         {
             var bodyContent = new StringContent(JsonSerializer.Serialize(expense), Encoding.UTF8, "application/json");
 
-            var refreshResult = await _client.PostAsync("api/expense/createexpenseforuser", bodyContent);
+            var refreshResult = await _client.PostAsync("api/expense/createforuser", bodyContent);
             if (!refreshResult.IsSuccessStatusCode)
                 throw new Exception(refreshResult.ToString());
 
@@ -54,7 +54,7 @@ namespace CashFlow.Client.Lib.Services
 
         public async Task RemoveExpenseAsync(string id)
         {
-            HttpResponseMessage registrationResult = await _client.DeleteAsync($"api/expense/removeexpense?id={id}");
+            HttpResponseMessage registrationResult = await _client.DeleteAsync($"api/expense/remove?id={id}");
             if (!registrationResult.IsSuccessStatusCode)
                 throw new Exception(registrationResult.ToString());
         }

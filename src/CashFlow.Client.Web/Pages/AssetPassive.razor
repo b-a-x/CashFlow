@@ -58,29 +58,29 @@
 
 <h4>Пассивы</h4>
 <RadzenButton Icon="add_circle_outline" style="margin-bottom: 10px" Text="Добавить" Click="@InsertRowPassive" />
-<RadzenGrid @ref="passiveGrid" AllowFiltering="false" AllowPaging="true" PageSize="4" AllowSorting="true" EditMode="DataGridEditMode.Single"
-            Data="@passives" TItem="Passive" RowUpdate="@OnUpdateRowPassive" RowCreate="@OnCreateRowPassive">
+<RadzenGrid @ref="_passiveGrid" AllowFiltering="false" AllowPaging="true" PageSize="4" AllowSorting="true" EditMode="DataGridEditMode.Single"
+            Data="@_passives" TItem="PassiveDto" RowUpdate="@OnUpdateRowPassive" RowCreate="@OnCreateRowPassive">
     <Columns>
-        <RadzenGridColumn Visible="false" Width="100px" TItem="Passive" Property="Id" Title="Id" />
-        <RadzenGridColumn Width="15px" TItem="Passive" Property="OrderNumber" Title="№" />
-        <RadzenGridColumn Width="200px" TItem="Passive" Property="Name" Title="Название">
+        <RadzenGridColumn Visible="false" Width="100px" TItem="PassiveDto" Property="Id" Title="Id" />
+        <RadzenGridColumn Width="15px" TItem="PassiveDto" Property="OrderNumber" Title="№" />
+        <RadzenGridColumn Width="200px" TItem="PassiveDto" Property="Name" Title="Название">
             <EditTemplate Context="passive">
                 <RadzenTextBox @bind-Value="passive.Name" Style="width:100%; display: block" Name="Название" />
                 <RadzenRequiredValidator Text="Обязательно к заполнению" Component="Название" Popup="true" />
             </EditTemplate>
         </RadzenGridColumn>
-        <RadzenGridColumn Width="50px" TItem="Passive" Property="Price" Title="Цена">
+        <RadzenGridColumn Width="50px" TItem="PassiveDto" Property="Price" Title="Цена">
             <Template Context="passive">
                 @string.Format(_provider, "{0:C}", passive.Price)
             </Template>
             <FooterTemplate>
-                <b>@string.Format(_provider, "{0:C}", passives.Sum(o => o.Price))</b>
+                <b>@string.Format(_provider, "{0:C}", _passives.Sum(o => o.Price))</b>
             </FooterTemplate>
             <EditTemplate Context="passive">
                 <RadzenNumeric @bind-Value="passive.Price" Style="width:100%" />
             </EditTemplate>
         </RadzenGridColumn>
-        <RadzenGridColumn TItem="Passive" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="20px">
+        <RadzenGridColumn TItem="PassiveDto" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="20px">
             <Template Context="passive">
                 <RadzenButton Icon="edit" Size="ButtonSize.Small" Click="@(args => EditRowPassive(passive))">
                 </RadzenButton>
@@ -92,7 +92,7 @@
                 </RadzenButton>
             </EditTemplate>
         </RadzenGridColumn>
-        <RadzenGridColumn TItem="Passive" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="20px">
+        <RadzenGridColumn TItem="PassiveDto" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="20px">
             <Template Context="passive">
                 <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Small" Click="@(args => DeleteRowPassive(passive))">
                 </RadzenButton>

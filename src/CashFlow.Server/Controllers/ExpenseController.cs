@@ -20,7 +20,7 @@ namespace CashFlow.Server.Controllers
         }
 
         [HttpGet]
-        [Route("getallexpenseforuser")]
+        [Route("getallforuser")]
         public async Task<IActionResult> GetAllExpenseForUser()
         {
             //TODO: Вынести получение id user
@@ -28,21 +28,21 @@ namespace CashFlow.Server.Controllers
         }
 
         [HttpPut]
-        [Route("updateexpense")]
+        [Route("update")]
         public async Task<IActionResult> UpdateExpense([FromBody] ExpenseDto expense)
         {
             return Ok(await _expenseService.UpdateExpenseAsync(expense));
         }
 
         [HttpPost]
-        [Route("createexpenseforuser")]
+        [Route("createforuser")]
         public async Task<IActionResult> CreateExpenseForUser([FromBody] ExpenseDto expense)
         {
             return Ok(await _expenseService.CreateExpenseForUserAsync(expense, User.FindFirstValue(ClaimTypes.NameIdentifier)));
         }
 
         [HttpDelete]
-        [Route("removeexpense")]
+        [Route("remove")]
         public async Task RemoveExpense([FromQuery] string id)
         {
             await _expenseService.RemoveExpenseAsync(id);

@@ -48,7 +48,12 @@ namespace CashFlow.Server.Extensions
                 
                 appContext.Assets.AddRange(new []
                 {
-                    new Asset{ Name = "Акции компании Apple", Quantity = 10, Price = 100000, OrderNumber = 1}
+                    new Asset { Name = "Акции компании Apple", Quantity = 10, Price = 100000, OrderNumber = 1 }
+                });
+                
+                appContext.Passives.AddRange(new []
+                {
+                    new Passive { Name = "Ипотека", Price = 5000000, OrderNumber = 1 }
                 });
                
                 appContext.SaveChanges();
