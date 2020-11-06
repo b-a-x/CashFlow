@@ -24,11 +24,23 @@ namespace CashFlow.Client.Web.Pages
         [Inject]
         public IPassiveService _passiveService { get; set; }
 
+        [Inject]
+        public NavigationManager NavigationManager { get; set; }
+
         protected override async Task OnInitializedAsync()
         {
             _interceptor.RegisterEvent();
-            _assets = (List<AssetDto>)await _assetService.GetAllAssetForUserAsync(string.Empty);
-            _passives = (List<PassiveDto>)await _passiveService.GetAllPassiveForUserAsync(string.Empty);
+            try
+            {
+                //TODO: Обрабатывать Exception авторизации 
+                _assets = (List<AssetDto>)await _assetService.GetAllAssetForUserAsync(string.Empty);
+                _passives = (List<PassiveDto>)await _passiveService.GetAllPassiveForUserAsync(string.Empty);
+            }
+            catch (Exception _)
+            {
+                NavigationManager.NavigateTo("/login");
+            }
+            
             await base.OnInitializedAsync();
         }
 
@@ -50,13 +62,31 @@ namespace CashFlow.Client.Web.Pages
                 edit.Name = asset.Name;
                 edit.Price = asset.Price;
                 edit.Quantity = asset.Quantity;
-                await _assetService.UpdateAssetAsync(edit);
+
+                try
+                {
+                    //TODO: Обрабатывать Exception авторизации 
+                    await _assetService.UpdateAssetAsync(edit);
+                }
+                catch (Exception _)
+                {
+                    NavigationManager.NavigateTo("/login");
+                }
             }
         }
 
         private async Task OnCreateRowAsset(AssetDto asset)
         {
-            asset = await _assetService.CreateAssetForUserAsync(asset, string.Empty);
+            try
+            {
+                //TODO: Обрабатывать Exception авторизации 
+                asset = await _assetService.CreateAssetForUserAsync(asset, string.Empty);
+            }
+            catch (Exception _)
+            {
+                NavigationManager.NavigateTo("/login");
+            }
+            
             _assets.Add(asset);
             await _assetGrid.Reload();
         }
@@ -82,7 +112,16 @@ namespace CashFlow.Client.Web.Pages
             {
                 _assets.Remove(asset);
                 await _assetGrid.Reload();
-                await _assetService.RemoveAssetAsync(asset.Id);
+
+                try
+                {
+                    //TODO: Обрабатывать Exception авторизации 
+                    await _assetService.RemoveAssetAsync(asset.Id);
+                }
+                catch (Exception _)
+                {
+                    NavigationManager.NavigateTo("/login");
+                }
             }
             else
             {
@@ -106,13 +145,31 @@ namespace CashFlow.Client.Web.Pages
                 edit.Name = passive.Name;
                 edit.Price = passive.Price;
                 edit.OrderNumber = passive.OrderNumber;
-                await _passiveService.UpdatePassiveAsync(edit);
+
+                try
+                {
+                    //TODO: Обрабатывать Exception авторизации 
+                    await _passiveService.UpdatePassiveAsync(edit);
+                }
+                catch (Exception _)
+                {
+                    NavigationManager.NavigateTo("/login");
+                }
             }
         }
 
         private async Task OnCreateRowPassive(PassiveDto passive)
         {
-            passive = await _passiveService.CreatePassiveForUserAsync(passive, string.Empty);
+            try
+            {
+                //TODO: Обрабатывать Exception авторизации 
+                passive = await _passiveService.CreatePassiveForUserAsync(passive, string.Empty);
+            }
+            catch (Exception _)
+            {
+                NavigationManager.NavigateTo("/login");
+            }
+            
             _passives.Add(passive);
             await _passiveGrid.Reload();
         }
@@ -134,12 +191,20 @@ namespace CashFlow.Client.Web.Pages
 
         private async Task DeleteRowPassive(PassiveDto passive)
         {
-            //TODO Научиться правильно пределять объект
             if (_passives.Contains(passive))
             {
                 _passives.Remove(passive);
                 await _passiveGrid.Reload();
-                await _passiveService.RemovePassiveAsync(passive.Id);
+                try
+                {
+                    //TODO: Обрабатывать Exception авторизации 
+                    await _passiveService.RemovePassiveAsync(passive.Id);
+                }
+                catch (Exception _)
+                {
+                    NavigationManager.NavigateTo("/login");
+                }
+                
             }
             else
             {

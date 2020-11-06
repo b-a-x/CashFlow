@@ -20,11 +20,16 @@ namespace CashFlow.Client.Web.Services
         {
             AuthenticationState authState = await _authProvider.GetAuthenticationStateAsync();
             ClaimsPrincipal user = authState.User;
-
-            string exp = user.FindFirst(c => c.Type.Equals("exp")).Value;
-            DateTimeOffset expTime = DateTimeOffset.FromUnixTimeSeconds(Convert.ToInt64(exp));
-            if ((expTime - DateTime.UtcNow).TotalMinutes <= 2)
-                return await _authService.RefreshToken();
+            
+            string exp = user.FindFirst(c => c.Type.Equals("exp"))?.Value;
+            if (string.IsNullOrEmpty(exp) == false)
+            {
+                DateTimeOffset expTime = DateTimeOffset.FromUnixTimeSeconds(Convert.ToInt64(exp));
+                if ((expTime - DateTime.UtcNow).TotalMinutes <= 1)
+                {
+                    return await _authService.RefreshToken();
+                }
+            }
 
             return string.Empty;
         }

@@ -24,6 +24,9 @@ namespace CashFlow.Client.Web.Pages
         [Inject]
         private IExpenseService _expenseService { get; set; }
 
+        [Inject]
+        public NavigationManager NavigationManager { get; set; }
+
         private string _titleTotalCashFlow;
         private float _totalIncome;
         private float _totalExpense;
@@ -53,8 +56,17 @@ namespace CashFlow.Client.Web.Pages
         protected override async Task OnInitializedAsync()
         {
             _interceptor.RegisterEvent();
-            _incomes = (List<IncomeDto>)await _incomeService.GetAllIncomeForUserAsync(string.Empty);
-            _expenses = (List<ExpenseDto>)await _expenseService.GetAllExpenseForUserAsync(string.Empty);
+            try
+            {
+                //TODO: Обрабатывать Exception авторизации 
+                _incomes = (List<IncomeDto>)await _incomeService.GetAllIncomeForUserAsync(string.Empty);
+                _expenses = (List<ExpenseDto>)await _expenseService.GetAllExpenseForUserAsync(string.Empty);
+            }
+            catch (Exception _)
+            {
+                NavigationManager.NavigateTo("/login");
+            }
+            
             TotalIncome = _incomes.Sum(x => x.Price);
             TotalExpense = _expenses.Sum(x => x.Price);
             await base.OnInitializedAsync();
@@ -79,7 +91,15 @@ namespace CashFlow.Client.Web.Pages
             {
                 edit.Name = income.Name;
                 edit.Price = income.Price;
-                await _incomeService.UpdateIncomeAsync(edit);
+                try
+                {
+                    //TODO: Обрабатывать Exception авторизации 
+                    await _incomeService.UpdateIncomeAsync(edit);
+                }
+                catch (Exception _)
+                {
+                    NavigationManager.NavigateTo("/login");
+                }
             }
 
             TotalIncome = _incomes.Sum(x => x.Price);
@@ -87,7 +107,16 @@ namespace CashFlow.Client.Web.Pages
 
         private async Task OnCreateRowIncome(IncomeDto income)
         {
-            income = await _incomeService.CreateIncomeForUserAsync(income, string.Empty);
+            try
+            {
+                //TODO: Обрабатывать Exception авторизации 
+                income = await _incomeService.CreateIncomeForUserAsync(income, string.Empty);
+            }
+            catch (Exception _)
+            {
+                NavigationManager.NavigateTo("/login");
+            }
+            
             _incomes.Add(income);
             TotalIncome = _incomes.Sum(x => x.Price);
             await _incomesGrid.Reload();
@@ -115,7 +144,15 @@ namespace CashFlow.Client.Web.Pages
                 _incomes.Remove(income);
                 TotalIncome = _incomes.Sum(x => x.Price);
                 await _incomesGrid.Reload();
-                await _incomeService.RemoveIncomeAsync(income.Id);
+                try
+                {
+                    //TODO: Обрабатывать Exception авторизации 
+                    await _incomeService.RemoveIncomeAsync(income.Id);
+                }
+                catch (Exception _)
+                {
+                    NavigationManager.NavigateTo("/login");
+                }
             }
             else
             {
@@ -138,7 +175,15 @@ namespace CashFlow.Client.Web.Pages
             {
                 edit.Name = expense.Name;
                 edit.Price = expense.Price;
-                await _expenseService.UpdateExpenseAsync(edit);
+                try
+                {
+                    //TODO: Обрабатывать Exception авторизации 
+                    await _expenseService.UpdateExpenseAsync(edit);
+                }
+                catch (Exception _)
+                {
+                    NavigationManager.NavigateTo("/login");
+                }
             }
 
             TotalExpense = _expenses.Sum(x => x.Price);
@@ -146,7 +191,16 @@ namespace CashFlow.Client.Web.Pages
 
         private async Task OnCreateRowExpense(ExpenseDto expense)
         {
-            expense = await _expenseService.CreateExpenseForUserAsync(expense, string.Empty);
+            try
+            {
+                //TODO: Обрабатывать Exception авторизации 
+                expense = await _expenseService.CreateExpenseForUserAsync(expense, string.Empty);
+            }
+            catch (Exception _)
+            {
+                NavigationManager.NavigateTo("/login");
+            }
+            
             _expenses.Add(expense);
             TotalExpense = _expenses.Sum(x => x.Price);
             await _expensesGrid.Reload();
@@ -174,7 +228,15 @@ namespace CashFlow.Client.Web.Pages
                 _expenses.Remove(expense);
                 TotalExpense = _expenses.Sum(x => x.Price);
                 await _expensesGrid.Reload();
-                await _expenseService.RemoveExpenseAsync(expense.Id);
+                try
+                {
+                    //TODO: Обрабатывать Exception авторизации 
+                    await _expenseService.RemoveExpenseAsync(expense.Id);
+                }
+                catch (Exception _)
+                {
+                    NavigationManager.NavigateTo("/login");
+                }
             }
             else
             {
