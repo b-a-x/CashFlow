@@ -8,8 +8,8 @@ namespace CashFlow.Server
     {
         public static void Main(string[] args)
         {
-            //CreateHostBuilder(args).Build().MigrateDatabase().Run();
-            CreateHostBuilder(args).Build().InitializeDatabase().Run();
+            CreateHostBuilder(args).Build().MigrateDatabase().Run();
+            //CreateHostBuilder(args).Build().InitializeDatabase().Run();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>

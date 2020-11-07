@@ -19,8 +19,7 @@ namespace CashFlow.DataProvider.EFCore.Providers
 
         public async Task<IReadOnlyCollection<ExpenseDto>> GetAllExpenseForUserAsync(string userId)
         {
-            //TODO: Тест выборка
-            return await _context.Expenses.Where(x => x.UserId == userId || x.UserId == null || x.UserId == string.Empty)
+            return await _context.Expenses.Where(x => x.UserId == userId)
                 .OrderBy(x => x.OrderNumber).AsNoTracking()
                 .Select(x => new ExpenseDto { Id = x.Id, Name = x.Name, OrderNumber = x.OrderNumber, Price = x.Price })
                 .ToArrayAsync();

@@ -19,8 +19,7 @@ namespace CashFlow.DataProvider.EFCore.Providers
 
         public async Task<IReadOnlyCollection<PassiveDto>> GetAllPassiveForUserAsync(string userId)
         {
-            //TODO: Тест выборка
-            return await _context.Passives.Where(x => x.UserId == userId || x.UserId == null || x.UserId == string.Empty)
+            return await _context.Passives.Where(x => x.UserId == userId)
                 .OrderBy(x => x.OrderNumber).AsNoTracking()
                 .Select(x => new PassiveDto { Id = x.Id, Name = x.Name, OrderNumber = x.OrderNumber, Price = x.Price })
                 .ToArrayAsync();
@@ -45,11 +44,10 @@ namespace CashFlow.DataProvider.EFCore.Providers
         public async Task<PassiveDto> CreatePassiveForUserAsync(PassiveDto passive, string userId)
         {
             //TODO: бизенс логику убрать в menager, сделать в одной транзакции
-            //TODO: Тест выборка
             var orderNumber = _context.Expenses
-                .Where(x => x.UserId == userId || x.UserId == null || x.UserId == string.Empty)
+                .Where(x => x.UserId == userId)
                 .OrderByDescending(x => x.OrderNumber).FirstOrDefault()?.OrderNumber + 1 ?? 1;
-            var newExpense = new Expense { Name = passive.Name, OrderNumber = orderNumber, Price = 0};
+            var newExpense = new Expense { Name = passive.Name, OrderNumber = orderNumber, Price = 0, UserId = userId};
             await _context.Expenses.AddAsync(newExpense);
 
             var newPassive = new Passive
@@ -76,7 +74,8 @@ namespace CashFlow.DataProvider.EFCore.Providers
             //TODO: бизенс логику убрать в menager, сделать в одной транзакции
             Passive original = await _context.Passives.FindAsync(id);
             Expense orign = await _context.Expenses.FindAsync(original.ExpenseId);
-            _context.Passives.Remove(original);
+            if(orign != null)
+                _context.Passives.Remove(original);
             _context.Expenses.Remove(orign);
             await _context.SaveChangesAsync();
         }

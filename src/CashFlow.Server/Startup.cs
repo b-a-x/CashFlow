@@ -1,9 +1,11 @@
+using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Text;
 using CashFlow.DataProvider.EFCore;
+using CashFlow.DataProvider.EFCore.Helpers;
 using CashFlow.DataProvider.EFCore.Model;
 using CashFlow.DataProvider.EFCore.Providers;
 using CashFlow.DataProvider.Interfaces;
@@ -20,17 +22,28 @@ namespace CashFlow.Server
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
-
+        public IWebHostEnvironment Env { get; }
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
-        // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
+        public Startup(IConfiguration configuration, IWebHostEnvironment env)
+        {
+            Configuration = configuration;
+            Env = env;
+        }
+
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContextPool<DataContext>(x =>
+            {
+                //Heroku
+                if (Env.IsProduction())
+                    x.UseNpgsql(new ConnectionStringHerokuHelper(Environment.GetEnvironmentVariable("DATABASE_URL")).ConnectionString, builder => builder.MigrationsAssembly("CashFlow.DataProvider.EFCore"));
+                else if (Env.IsDevelopment())
+                    x.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"), builder => builder.MigrationsAssembly("CashFlow.DataProvider.EFCore"));
+                //else if (env.IsDevelopment())
+                //    x.UseInMemoryDatabase("TestDb");
+            });
+
             services.AddCors(policy =>
             {
                 policy.AddPolicy("CorsPolicy", opt => opt
@@ -42,7 +55,6 @@ namespace CashFlow.Server
 
             services.AddControllers();
 
-            services.AddDbContextPool<DataContext>(x => x.UseInMemoryDatabase("TestDb"));
             services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<DataContext>();
 
             var jwtSettings = Configuration.GetSection("JwtSettings");
@@ -78,7 +90,6 @@ namespace CashFlow.Server
             services.AddScoped<IPassiveService, PassiveService>();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -88,7 +99,6 @@ namespace CashFlow.Server
             }
             else
             {
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
 

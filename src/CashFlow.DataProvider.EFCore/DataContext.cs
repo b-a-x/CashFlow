@@ -8,7 +8,7 @@ namespace CashFlow.DataProvider.EFCore
 {
     public class DataContext : IdentityDbContext<User>
     {
-        public DataContext(DbContextOptions options)
+        public DataContext(DbContextOptions<DataContext> options)
             : base(options)
         {
         }
