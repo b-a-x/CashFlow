@@ -25,7 +25,7 @@
                 @string.Format(_provider, "{0:C}", asset.Price)
             </Template>
             <FooterTemplate>
-                <b>@string.Format(_provider, "{0:C}", _assets.Sum(o => o.Price))</b>
+                <b>@string.Format(_provider, "{0:C}", _assets.Sum(o => o.Price * o.Quantity))</b>
             </FooterTemplate>
             <EditTemplate Context="asset">
                 <RadzenNumeric @bind-Value="asset.Price" Style="width:100%" />
