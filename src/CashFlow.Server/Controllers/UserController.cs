@@ -18,7 +18,7 @@ namespace CashFlow.Server.Controllers
     {
         private readonly UserManager<User> _userManager;
         private readonly ITokenService _tokenService;
-
+        //TODO: Переделать
         public UserController(UserManager<User> userManager, ITokenService tokenService)
         {
             _userManager = userManager;

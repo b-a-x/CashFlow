@@ -1,6 +1,6 @@
-﻿using System.Security.Claims;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using CashFlow.Model.Dto.Request;
+using CashFlow.Server.Extensions;
 using CashFlow.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -21,31 +21,22 @@ namespace CashFlow.Server.Controllers
 
         [HttpGet]
         [Route("getallforuser")]
-        public async Task<IActionResult> GetAllPassiveForUser()
-        {
-            //TODO: Вынести получение id user
-            return Ok(await _passiveService.GetAllPassiveForUserAsync(User.FindFirstValue(ClaimTypes.NameIdentifier)));
-        }
+        public async Task<IActionResult> GetAllPassiveForUser() => 
+            Ok(await _passiveService.GetAllPassiveForUserAsync(User.GetIdentifier()));
 
         [HttpPut]
         [Route("update")]
-        public async Task<IActionResult> UpdatePassive([FromBody] PassiveDto passive)
-        {
-            return Ok(await _passiveService.UpdatePassiveAsync(passive));
-        }
+        public async Task<IActionResult> UpdatePassive([FromBody] PassiveDto passive) => 
+            Ok(await _passiveService.UpdatePassiveAsync(passive));
 
         [HttpPost]
         [Route("createforuser")]
-        public async Task<IActionResult> CreatePassiveForUser([FromBody] PassiveDto passive)
-        {
-            return Ok(await _passiveService.CreatePassiveForUserAsync(passive, User.FindFirstValue(ClaimTypes.NameIdentifier)));
-        }
+        public async Task<IActionResult> CreatePassiveForUser([FromBody] PassiveDto passive) => 
+            Ok(await _passiveService.CreatePassiveForUserAsync(passive, User.GetIdentifier()));
 
         [HttpDelete]
         [Route("remove")]
-        public async Task RemovePassive([FromQuery] string id)
-        {
-            await _passiveService.RemovePassiveAsync(id);
-        }
+        public Task RemovePassive([FromQuery] string id) => 
+            _passiveService.RemovePassiveAsync(id);
     }
 }
