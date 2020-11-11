@@ -1,8 +1,8 @@
-using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System;
 using System.Text;
 using CashFlow.DataProvider.EFCore;
 using CashFlow.DataProvider.EFCore.Helpers;
@@ -12,10 +12,10 @@ using CashFlow.DataProvider.Interfaces;
 using CashFlow.Server.Lib.Services;
 using CashFlow.Server.Services;
 using CashFlow.Services.Interfaces;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 
 namespace CashFlow.Server
@@ -83,7 +83,7 @@ namespace CashFlow.Server
             services.AddScoped<IExpenseProvider, ExpenseProvider>();
             services.AddScoped<IAssetProvider, AssetProvider>();
             services.AddScoped<IPassiveProvider, PassiveProvider>();
-            
+
             services.AddScoped<IIncomeService, IncomeService>();
             services.AddScoped<IExpenseService, ExpenseService>();
             services.AddScoped<IAssetService, AssetService>();
