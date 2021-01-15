@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Common.Core.Model;
 
 namespace CashFlow.Model
 {
-    public class Entity
+    public class Entity : HasIdBase<string>
     {
-        public string Id { get; set; }
     }
 }
