@@ -1,6 +1,6 @@
-﻿using System.Security.Claims;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using CashFlow.Model.Dto.Request;
+using CashFlow.Server.Extensions;
 using CashFlow.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -21,30 +21,22 @@ namespace CashFlow.Server.Controllers
 
         [HttpGet]
         [Route("getallforuser")]
-        public async Task<IActionResult> GetAllAssetForUser()
-        {
-            return Ok(await _assetService.GetAllAssetForUserAsync(User.FindFirstValue(ClaimTypes.NameIdentifier)));
-        }
+        public async Task<IActionResult> GetAllAssetForUser() => 
+            Ok(await _assetService.GetAllAssetForUserAsync(User.GetIdentifier()));
 
         [HttpPut]
         [Route("update")]
-        public async Task<IActionResult> UpdateAsset([FromBody] AssetDto asset)
-        {
-            return Ok(await _assetService.UpdateAssetAsync(asset));
-        }
+        public async Task<IActionResult> UpdateAsset([FromBody] AssetDto asset) => 
+            Ok(await _assetService.UpdateAssetAsync(asset));
 
         [HttpPost]
         [Route("createforuser")]
-        public async Task<IActionResult> CreateAssetForUser([FromBody] AssetDto asset)
-        {
-            return Ok(await _assetService.CreateAssetForUserAsync(asset, User.FindFirstValue(ClaimTypes.NameIdentifier)));
-        }
+        public async Task<IActionResult> CreateAssetForUser([FromBody] AssetDto asset) => 
+            Ok(await _assetService.CreateAssetForUserAsync(asset, User.GetIdentifier()));
 
         [HttpDelete]
         [Route("remove")]
-        public async Task RemoveAsset([FromQuery] string id)
-        {
-            await _assetService.RemoveAssetAsync(id);
-        }
+        public Task RemoveAsset([FromQuery] string id) => 
+            _assetService.RemoveAssetAsync(id);
     }
 }
