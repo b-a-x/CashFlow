@@ -19,7 +19,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CashFlow.DataProvider.EFCor
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CashFlow.Client.Web", "CashFlow.Client.Web\CashFlow.Client.Web.csproj", "{B01DA9C3-A4DC-4E63-BBA1-33362CAF010E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CashFlow.Server", "CashFlow.Server\CashFlow.Server.csproj", "{B85B3756-0D41-4BB0-9261-A44F8A1AC76D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CashFlow.Server", "CashFlow.Server\CashFlow.Server.csproj", "{B85B3756-0D41-4BB0-9261-A44F8A1AC76D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
