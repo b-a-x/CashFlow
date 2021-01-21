@@ -40,8 +40,7 @@ namespace CashFlow.Server
                     x.UseNpgsql(new ConnectionStringHerokuHelper(Environment.GetEnvironmentVariable("DATABASE_URL")).ConnectionString, builder => builder.MigrationsAssembly("CashFlow.DataProvider.EFCore"));
                 else if (Env.IsDevelopment())
                     x.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"), builder => builder.MigrationsAssembly("CashFlow.DataProvider.EFCore"));
-                //else if (env.IsDevelopment())
-                //    x.UseInMemoryDatabase("TestDb");
+                    //x.UseInMemoryDatabase("TestDb");
             });
 
             services.AddCors(policy =>
